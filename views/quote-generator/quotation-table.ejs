@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<%- include('../template/header', {title:title}) %>
+<body>
+    <%- include('../nav/nav', {title: title}) %>
+    <div class="container">
+        <div class="row row-title p-2">
+            <div class="col-6">
+                <a class="btn btn-success" href="/cotizador/nueva-cotizacion"><b>+</b> Agregar</a>
+
+            </div>
+            <div class="col-6">
+                <h1 class="h1 text-end"><%= title %></h1>
+            </div>
+        </div>
+        <div>
+            <table class="table table-hover table-responsive">
+                <thead>
+                    <tr>
+                        <th>Nro Cotizacion</th>
+                        <th>Monto</th>
+                        <th>Dirección</th>
+                        <th>Status</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="text-center" >001</td>
+                        <td>25.900</td>
+                        <td>porugal 755</td>
+                        <td>aceptada</td>
+                        <td> botones </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>  
+</body>
+</html>

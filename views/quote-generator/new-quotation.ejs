@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<%- include('../template/header', {title:title}) %>
+<body>
+    <%- include('../nav/nav', {title: title}) %>
+    <div class="container p-4">
+        <div class="card shadow mx-aut col-6">
+            <div class="card-header">
+                <h1 class="h4 text-center"><%= title %></h1>
+            </div>
+            <div class="card-body ">
+                <form action="">
+                    <li>vip</li>
+                    <li>servicio</li>
+                    <li>origen destino paradas</li>
+                    <div class="form-floating mb-2">
+                        <input type="text" class="form-control form-control-sm" id="cotizadorOrigen" placeholder="email@email.cl" required>
+                        <label for="userName">Nombre y Apellido</label>
+                    </div>                   
+                    <div class="form-floating mb-2">
+                        <input type="text" class="form-control form-control-sm" name="userDocumentNumber" placeholder="email@email.cl" required>
+                        <label for="userEmail">RUN</label>
+                    </div>
+                    <div class="form-floating mb-2">
+                        <input type="email" class="form-control form-control-sm" id="cotizadorOrigen" placeholder="email@email.cl" required>
+                        <label for="userEmail">Correo Electrónico</label>
+                    </div>
+                    <div class="form-floating mb-2">
+                        <select class="form-control form-control-sm" name="userArea" required>
+                            <option value="" disabled selected>Seleccione area del trabajador</option>
+                            <option value="vendedor">Comercial</option>
+                            <option value="vendedor">Operaciones</option>
+                            <option value="vendedor">Flota</option>
+                    
+                        </select>
+                        <label for="rol">Rol</label>
+                    </div>
+                    <div class="form-floating mb-2">
+                        <select class="form-control form-control-sm" name="userRol" required>
+                            <option value="" disabled selected>Seleccione un rol</option>
+                            <option value="vendedor">Vendedor</option>
+                            <option value="administrador">Administrador</option>
+                            <option value="supervisor">Supervisor</option>
+                        </select>
+                        <label for="rol">Rol</label>
+                    </div>
+                    <div class="text-end">
+                        <button type="submit" class="btn btn-success">Agregar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

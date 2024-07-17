@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<%- include('../template/header', {title:title}) %>
+<body>
+    <div class="container p-4 div-login">
+        <div class="card shadow mx-aut col-6">
+            <div class="card-header">
+                <h1 class="h4 text-center"><%= title %></h1>
+            </div>
+            <div class="card-body ">
+                <form action="/nuevo-usuario" method="post">
+                    <div class="form-floating mb-2">
+                        <input type="text" value="<% if ( newUser.userFirstName) { %> newUser.userFirstName<%} %>" class="form-control form-control-sm" name="userFirstName" id="userFirstName" placeholder="Nombre" required>
+                        <label for="userFirstName">Nombre</label>                       
+                    </div>
+                    <div class="form-floating mb-2">
+                        <input type="text" class="form-control form-control-sm" name="userLastName" id="userLastName" placeholder="Nombre" required>
+                        <label for="userLastName">Apellido</label>
+                    </div>
+                    <div class="form-floating mb-2">
+                        <input type="text" class="form-control form-control-sm" name="userDocumentNumber" id="DocumentNumber" placeholder="12345678-9" required>
+                        <label for="userDocumentNumber">RUN</label>
+                    </div>
+                    <div class="form-floating mb-2">
+                        <input type="email" class="form-control form-control-sm" name="userEmail" id="userEmail" placeholder="email@email.cl" required>
+                        <label for="userEmail">Correo Electrónico</label>
+                    </div>
+                    <div class="form-floating mb-2">
+                        <select class="form-control form-control-sm" name="userDepartment" required>
+                            <option value="" disabled selected>Seleccione area del trabajador</option>
+                            <option value="comercial">Comercial</option>
+                            <option value="operaciones">Operaciones</option>
+                            <option value="flota">Flota</option>
+                        </select>
+                        <label for="userDepartment">Departamento</label>
+                    </div>
+                    <div class="form-floating mb-2">
+                        <input type="password" class="form-control form-control-sm" name="userPassword" id="userPassword" placeholder="email@email.cl" required>
+                        <label for="userPassword">Contraseña </label>
+                    </div>
+                    <div class="form-floating mb-2">
+                        <input type="password" class="form-control form-control-sm" name="userPasswordConfirmation" id="userPasswordConfirmation" placeholder="email@email.cl" required>
+                        <label for="userPasswordConfirmation">Confirmar Contraseña</label>
+                    </div>
+
+
+                    <div class="form-check mb-3">
+                        <input class="form-check-input" type="checkbox" id="termsCheckbox" required>
+                        <label class="form-check-label" for="termsCheckbox">
+                            <small>Acepto los <a href="#">términos y condiciones</a></small>
+                        </label>
+                    </div>
+                    <div class="text-end">
+                        <a class="btn btn-outline-secondary" href="/" style="width: 100px;">Cancelar</a>
+                        <button type="submit" class="btn btn-primary" style="width: 100px;">Agregar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
