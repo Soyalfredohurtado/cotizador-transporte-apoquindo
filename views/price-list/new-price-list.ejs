@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<%- include('../template/header', {title:title}) %>
+<body>
+    <%- include('../nav/nav', {title: title}) %>
+    <div class="container">
+        <div class="card p-3 m-3">
+            <h1 class=" text-center h4">Nueva lista de precios</h1>
+            <form action="/lista-de-precios/nueva-lista" method="post" >
+                <div class="row" >           
+                    <div class="col-lg-8 px-3 py-0">
+                        <div class="row mb-2">
+                            <div class="col-sm-4">
+                                <label for="priceListID" class="form-label form-label-sm m-0">Código</label>
+                                <input type="text" class="form-control form-control-sm" id="priceListID" name="priceListID" required <%= btnEdit %> >
+                                <div class="invalid-feedback">
+                                    Este campo es obligatorio.
+                                </div>
+                            </div>                                                
+                            <div class="col-sm-8">
+                                <label for="priceListName" class="form-label form-label-sm m-0">Nombre</label>
+                                <input type="text" class="form-control form-control-sm" id="priceListName" name="priceListName" required  <%= btnEdit %> >
+                                <div class="invalid-feedback">
+                                    Este campo es obligatorio.
+                                </div>
+                            </div>
+                        </div>    
+                        <div class="table-responsive"> <!-- Detalle Lista Precios -->
+                            <table class="table  table-quoter-detail">
+                                <thead>
+                                    <tr class="text-center">
+                                        <th class="p-0">Item</th>
+                                        <th class="p-0">Valor</th>
+                                        <th class="p-0">Habilitar</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        
+                                        <td>Bajada de Bandera</td>
+                                        <td><input type="number" value="" id="priceListBandera" name="priceListBandera" min="0" step="1" required placeholder="0" class="text-end"></td>
+                                        <td class="text-center">
+                                            <div class="form-check form-switch">
+                                                <input type="checkbox" class="form-check-input" id="priceListBanderaStatus" name="priceListBanderaStatus" checked >
+                                            </div>       
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Kilómetros</td>
+                                        <td><input type="number" id="priceListKilometros" name="priceListKilometros" min="0" step="1" required placeholder="0" class="text-end"></td>
+                                        <td class="text-center">
+                                            <div class="form-check form-switch">
+                                                <input type="checkbox" class="form-check-input" id="priceListKilometrosStatus" name="priceListKilometrosStatus" checked >
+                                            </div>       
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Minutos</td>
+                                        <td><input type="number" id="priceListMinutos" name="priceListMinutos" min="0" step="1" required placeholder="0" class="text-end"></td>
+                                        <td class="text-center">
+                                            <div class="form-check form-switch">
+                                                <input type="checkbox" class="form-check-input" id="priceListMinutosStatus" name="priceListMinutosStatus" checked >
+                                            </div>       
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>TAG</td>
+                                        <td><input type="number" id="priceListTAG" name="priceListTAG" min="0" step="1" required placeholder="0" class="text-end"></td>
+                                        <td class="text-center">
+                                            <div class="form-check form-switch">
+                                                <input type="checkbox" class="form-check-input" id="priceListTAGStatus" name="priceListTAGStatus" checked >
+                                            </div>       
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Peajes</td>
+                                        <td><input type="number" id="priceListPeajes" name="priceListPeajes" min="0" step="1" required placeholder="0" class="text-end"></td>
+                                        <td class="text-center">
+                                            <div class="form-check form-switch">
+                                                <input type="checkbox" class="form-check-input" id="priceListPeajesStatus" name="priceListPeajesStatus" checked >
+                                            </div>       
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="mb-3">
+                                <label for="priceListObservation" class="form-label">Observaciones</label>
+                                <textarea id="priceListObservation" name="priceListObservation" class="form-control" maxlength="45" rows="2"></textarea>
+                            </div>
+                        </div>
+                        <div>        
+                            <div class="form-check form-switch">
+                                <input type="checkbox" class="form-check-input" id="priceListStatus" name="priceListStatus" checked >
+                                <label for="priceListStatus">hanilitada</label>
+                            </div>                    
+                        </div>
+                    </div>
+                    <div class="col-lg-4 p-3 bg-info">
+                        <h3 class="text-center h5">Asignar a Servicios</h3>
+                        <% services.forEach (service => { %>
+                            <div class="form-check form-switch">
+                                <input type="checkbox" value="<%= service.serviceID %>" class="form-check-input" name="priceListService" >
+                                <label for="priceListService"><%= service.serviceName %></label>
+                                <label for="priceListService"> inf </label>
+                            </div>
+                        <% }) %> 
+                    
+                        <div class="row p-2">
+                            <div class="col-md-6 px-3 py-1">
+                                <button type="reset" class="btn btn-secondary w-100"> limpiar</button>
+                            </div>
+                            <div class="col-md-6  px-3 py-1">
+                                <button type="submit" class="btn btn-primary w-100">Crear </button>
+                            </div>
+                        </div>
+                    </div>  
+                </div>
+            </form>
+        </div>
+    </div>
+</body>

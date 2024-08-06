@@ -4,15 +4,14 @@
     <%- include('../nav/nav', {title: title}) %>
     <div class="container">
         <div class="row row-title p-2">
-            <div class="col-6">
-                <a class="btn btn-success" href="/usuarios/nuevo-usuario"><b>+</b> Agregar</a>
+            <div class="col-6">               
 
             </div>
             <div class="col-6">
                 <h1 class="h1 text-end"><%= title %></h1>
             </div>
         </div>
-        <div>
+        <div class="card p-4"> 
             <table class="table table-hover table-responsive">
                 <thead>
                     <tr>
@@ -23,20 +22,15 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>Alfredo Hurtado</td>
-                        <td> activo </td>
-                        <td> superAdmin</td>
-                        <td> <button>ver</button></td>
-                    </tr>
-                    <tr>
-                        <td>Felix Morillo</td>
-                        <td>activo </td>
-                        <td>Administrador</td>
-                        <td><button>ver</button></td>
-                    </tr>
-                </tbody>
-                
+                    <% users.forEach (user =>{ %>
+                        <tr>
+                            <td><%= user.userFirstName %></td>
+                            <td><%= user.userLastName %></td>
+                            <td><%= user.userDepartment %></td>
+                            <td><button>ver</button></td>       
+                        </tr>
+                    <% }) %>                  
+                </tbody>                
             </table>
         </div>
     </div>  

@@ -1,15 +1,34 @@
-const { name } = require('ejs');
-const express = require('express');
-const path = require('path');
+import express from 'express';
+import bcrypt from 'bcrypt';
+import mongoose from 'mongoose';
+import bodyParser from 'body-parser';
+import { Schema } from 'mongoose';
+import { name } from 'ejs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+
+//routers
+import userRouter from  './src/routes/users.js'
+import dashboardRouter from './src/routes/dashboard.js'
+import loginRouter from './src/routes/login.js'
+import quoteGeneratorRouter from './src/routes/quote-generator.js'
+import serviceRouter from './src/routes/services.js'
+import priceListRouter from './src/routes/price-list.js'
+
 const app = express();
 const port = 3000;
-const bcrypt = require('bcrypt');
-const mongoose = require('mongoose');
-const bodyParser = require('body-parser');
-const {Schema} = require('mongoose')
 
+const mongoUri = 'mongodb://localhost:27017/cotizador-transporte-apoquindo';
 
+mongoose.connect(mongoUri, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+}).then(() => console.log('Conectado a MongoDB'))
+  .catch(err => console.error('Error al conectar a MongoDB', err));
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 //configuracion monitor de platillas EJS
 app.set('view engine','ejs');
@@ -23,107 +42,18 @@ app.use(bodyParser.json());
 // Middleware para analizar datos de formularios HTML
 app.use(bodyParser.urlencoded({ extended: true }));
 
+app.use('/usuarios', userRouter);
+app.use('/dashboard', dashboardRouter);
+app.use('/', loginRouter);
+app.use('/cotizador', quoteGeneratorRouter)
+app.use('/servicios', serviceRouter)
+app.use('/lista-de-precios', priceListRouter)
 
-//conexion to MongoDB
-const mongo_uri = 'mongodb://localhost:27017/cotizador-transporte-apoquindo';
-
-mongoose.connect(mongo_uri, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-}).then(() => {
-    console.log('Conectado a MongoDB');
-}).catch((error) => {
-    console.error('Error al conectar a MongoDB', error);
-});
-
-
-const userSchema = new Schema({
-    userFirstName: String,
-    userLastName:  String,
-    userDocumentNumber:  String,
-    userEmail:  String,
-    userDepartment:  String,
-    created_at:{ type: Date, default: Date.now }
-})
-
-const User = mongoose.model('User', userSchema);
-
-
-// ------------------------------- routes: LOGIN ----------------------------------------
 app.get('/', (req, res) => {
     res.render('login/login.ejs', {title: 'Login'})
     console.log('Ingresaste al login');
 });
 
-app.post('/', (req, res)=>{
-    let data = req.body;
-    if (data.userName === 'alfredocl2016@gmail.com' && data.userPassword == '4142'){
-        console.log('ingresaste al sistema');
-        res.redirect('dashboard');
-    }else{
-        res.redirect('/')
-    }
-})
 
-// ------------------------------- routes: DASHBOARD ----------------------------------------
-app.get('/dashboard', (req, res)=>{
-    
-    res.render('dashboard/dashboard.ejs', {title: 'Dashboard', view:'dashboard'})
-    console.log(date_now)
-})
-
-
-// ------------------------------- routes: COTIZADOR----------------------------------------
-app.get('/cotizador', (req, res)=>{
-    res.render('quote-generator/quotation-table.ejs', {title: 'Tabla Cotizaciones', view:'cotizador' })
-})
-app.get('/cotizador/nueva-cotizacion', (req, res)=>{
-    res.render('quote-generator/new-quotation.ejs', {title: 'Nueva Cotización', view:'cotizador' })
-})
-
-
-// ------------------------------- routes: USERS ----------------------------------------
-app.get('/usuarios', (req, res)=>{
-    res.render('users/users-table.ejs', {title: 'Usuarios', view:'users'})
-})
-
-// ------------------------------- routes: NEW-USERS ----------------------------------------
-app.get('/nuevo-usuario', (req, res)=>{
-   res.render('users/new-user.ejs', {title: 'Nuevo Usuario',  view:'users'})
-})
-
-app.post('/nuevo-usuario', (req, res)=>{
-    let data = req.body; 
-    //##### verificar si usuario exite tur y correo 
-    //##### colocar todo en minuscula 
-
-    if ( data.userPassword === data.userPasswordConfirmation) {
-        const newUser = new User({
-            userFirstName: data.userFirstName,
-            userLastName: data.userLastName,
-            userDocumentNumber: data.userDocumentNumber,
-            userEmail: data.userEmail,
-            userDepartment: data.userDepartment,
-            userPassword: data.userPassword, // hashear
-            created_at: new Date()         
-        })
-        console.table(newUser)
-    
-        newUser.save()
-        .then(() => {
-            console.log('Usuario guardado en la base de datos');
-        })
-        .catch((error) => {
-            console.error('Error al guardar el usuario', error);
-        });
-        res.redirect('dashboard')
-    }else{
-        console.log('contraseña no coinciden ')
-        res.render('/nuevo-usuario', newUser)
-    }
-})
-
-
-
-app.listen(port, (req, res)=> console.log('ingresaste al port: ' + port));
+app.listen(port, ()=> console.log('ingresaste al port: ' + port));
     

@@ -1,0 +1,79 @@
+import express from 'express';
+const router = express.Router();
+import { getServicesController } from '../controllers/serviceController.js'
+import { createPriceListController, getPriceListController, getPriceListByIDController  } from '../controllers/priceListController.js';
+
+
+router.get('/', async(req, res) =>{
+    try {
+        const priceList = await getPriceListController();
+        res.render('price-list/price-list-table.ejs', {title:'Lista de Precios', view:'price-list', priceList} )
+        
+    }catch (error) {
+            res.status(500).send(error);        
+        }
+})
+
+router.get('/nueva-lista', async (req, res) =>{
+    try {
+        const services = await getServicesController();
+        res.render('price-list/new-price-list.ejs', {title:'Lista de Precios', view:'price-list', services,   btnEdit: ''});
+        
+    }catch (error) {
+            res.status(500).send(error);        
+        }
+})
+
+router.post('/nueva-lista', async (req, res) =>{
+    try {
+        const priceList = await createPriceListController(req);    
+        res.redirect('/lista-de-precios/nueva-lista');         
+    } catch (error) {
+        console.log('--- price-list.js ---', error)
+        res.status(500).send('Error al crear servicio', error);
+    }
+})
+
+
+router.get('/view/:priceListID', async (req, res) => {
+    try {
+        const priceListID = req.params.priceListID;
+        const priceListData = await getPriceListByIDController(priceListID);
+
+        if(priceListData !== null ){
+            const services = await getServicesController();
+            res.render('price-list/price-list-edit.ejs', {
+                title: 'Lista de Precios view',
+                view: 'price-list',
+                btnEdit: 'readonly',
+                services,
+                priceListData
+            });
+
+            console.log(priceListData)
+
+        }else {
+            res.redirect('/lista-de-precios');
+        }
+        
+    } catch (error) {
+        console.log('--- price-list.js ---', error);
+        res.status(500).send(error);
+    }
+});
+
+
+router.get('/edit/:priceListID', async (req, res)=>{
+    try {
+        res.render('price-list/price-list-edit.ejs', {title:'Lista de Precios', view:'price-list', btnEdit:''});  
+        
+    } catch (error) {
+        console.log('--- price-list.js ---', error)
+        res.status(500).send(error);
+        
+    }
+})
+
+
+
+export default router;

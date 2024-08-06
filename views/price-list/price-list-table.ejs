@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<%- include('../template/header', {title:title}) %>
+<body >
+    <%- include('../nav/nav', {title: title}) %>
+    <div class="container">
+
+        <a href="/lista-de-precios/nueva-lista" class="btn btn-primary m-3">nueva lista</a>
+        <div class="table-responsive">
+            <table class="table table-sm table-hover">
+                <thead>
+                    <tr>
+                        <th>codigo</th>
+                        <th>Nombre</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <% priceList.forEach (price =>{%>
+                        <tr>
+                            <td><%= price.priceListID %></td>
+                            <td><%= price.priceListName %></td>
+                            <td> <!-- view -->
+                                <a class="btn text-success" href="/lista-de-precios/view/<%= price.priceListID %>"  title="ver servicio"><i class="fa-solid fa-eye"></i></a>
+                            </td>
+                            
+                        </tr>
+                        
+                    <% }) %>
+
+                </tbody>
+    
+            </table>
+        </div>
+        
+    </div>
+    <div>
+        
+    </div>
+
+</body>

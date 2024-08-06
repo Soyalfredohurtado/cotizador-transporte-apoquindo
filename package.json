@@ -3,9 +3,11 @@
   "version": "0.0.1",
   "description": "Cotizador de servicios Transportes Apoquindo",
   "main": "app.js",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node app.js"
+    "start": "node index.js",
+    "dev": "nodemon app.js"
   },
   "repository": {
     "type": "git",
@@ -28,7 +30,10 @@
     "body-parser": "^1.20.2",
     "ejs": "^3.1.10",
     "express": "^4.19.2",
+    "import": "^0.0.6",
     "mongodb": "^6.8.0",
-    "mongoose": "^8.5.1"
+    "mongoose": "^8.5.1",
+    "nodemon": "^3.1.4",
+    "uuid": "^10.0.0"
   }
 }
