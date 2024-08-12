@@ -1,14 +1,24 @@
 import PriceList from '../models/priceListModel.js';
 
 
-const getPriceListController = (req, res)=>{
+const getPriceListController =  async (req, res)=>{
     try {
-        const priceList = PriceList.find()
+        const priceList =  await PriceList.find()
         return priceList
     } catch (error) {
         
     }
 }
+
+const getPriceListController_ID = async (req, res, id_) => {
+    try {
+      const priceListOnlyID = await PriceList.find({}, 'priceListID');
+      return priceListOnlyID;
+    } catch (error) {
+      console.error('Error fetching price list IDs:', error);
+      return res.status(500).json({ message: 'Internal Server Error' });
+    }
+  };
 
 const getPriceListByIDController = async (priceListID) => {
     try {
@@ -19,6 +29,7 @@ const getPriceListByIDController = async (priceListID) => {
         throw error;
     }
 }
+
 const createPriceListController = async(req, res) => {
     try {
         const {priceListID, priceListName, priceListStatus, priceListObservation, priceListBandera, priceListBanderaStatus, priceListKilometros, priceListKilometrosStatus,priceListMinutos, priceListMinutosStatus, priceListTAG, priceListTAGStatus, priceListPeajes, priceListPeajesStatus, priceListService } = req.body; 
@@ -71,4 +82,4 @@ const createPriceListController = async(req, res) => {
     }
 }
 
-export { createPriceListController, getPriceListController, getPriceListByIDController  }
+export { createPriceListController, getPriceListController, getPriceListByIDController, getPriceListController_ID }

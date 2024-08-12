@@ -1,7 +1,7 @@
 import express from 'express';
 const router = express.Router();
 import { getServicesController } from '../controllers/serviceController.js'
-import { createPriceListController, getPriceListController, getPriceListByIDController  } from '../controllers/priceListController.js';
+import { createPriceListController, getPriceListController, getPriceListByIDController, getPriceListController_ID  } from '../controllers/priceListController.js';
 
 
 router.get('/', async(req, res) =>{
@@ -14,15 +14,18 @@ router.get('/', async(req, res) =>{
         }
 })
 
+
 router.get('/nueva-lista', async (req, res) =>{
     try {
         const services = await getServicesController();
-        res.render('price-list/new-price-list.ejs', {title:'Lista de Precios', view:'price-list', services,   btnEdit: ''});
+        const dbPriceListID = await getPriceListController_ID('priceListID');
+        res.render('price-list/new-price-list.ejs', {title:'Lista de Precios', view:'price-list', services,   btnEdit: '', dbPriceListID});
         
     }catch (error) {
             res.status(500).send(error);        
         }
 })
+
 
 router.post('/nueva-lista', async (req, res) =>{
     try {
@@ -47,11 +50,8 @@ router.get('/view/:priceListID', async (req, res) => {
                 view: 'price-list',
                 btnEdit: 'readonly',
                 services,
-                priceListData
+                priceListData,
             });
-
-            console.log(priceListData)
-
         }else {
             res.redirect('/lista-de-precios');
         }
@@ -73,7 +73,6 @@ router.get('/edit/:priceListID', async (req, res)=>{
         
     }
 })
-
 
 
 export default router;

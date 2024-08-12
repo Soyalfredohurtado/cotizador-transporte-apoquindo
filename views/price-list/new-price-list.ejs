@@ -12,6 +12,7 @@
                             <div class="col-sm-4">
                                 <label for="priceListID" class="form-label form-label-sm m-0">Código</label>
                                 <input type="text" class="form-control form-control-sm" id="priceListID" name="priceListID" required <%= btnEdit %> >
+                                <p id="priceListIDP" class="text-danger"></p>
                                 <div class="invalid-feedback">
                                     Este campo es obligatorio.
                                 </div>
@@ -98,9 +99,10 @@
                         <h3 class="text-center h5">Asignar a Servicios</h3>
                         <% services.forEach (service => { %>
                             <div class="form-check form-switch">
-                                <input type="checkbox" value="<%= service.serviceID %>" class="form-check-input" name="priceListService" >
-                                <label for="priceListService"><%= service.serviceName %></label>
-                                <label for="priceListService"> inf </label>
+                                <label for="<%= service.serviceName %>">
+                                <input type="checkbox" value="<%= service.serviceID %>" class="form-check-input" id="<%= service.serviceName %>" name="priceListService" >
+                               <%= service.serviceName %></label>
+                                <i class="fa-solid fa-circle-info text-light"></i>
                             </div>
                         <% }) %> 
                     
@@ -109,7 +111,7 @@
                                 <button type="reset" class="btn btn-secondary w-100"> limpiar</button>
                             </div>
                             <div class="col-md-6  px-3 py-1">
-                                <button type="submit" class="btn btn-primary w-100">Crear </button>
+                                <button type="submit" class="btn btn-primary w-100" id="btn-send">Crear </button>
                             </div>
                         </div>
                     </div>  
@@ -118,3 +120,39 @@
         </div>
     </div>
 </body>
+
+<script>
+    const idlist = <%- JSON.stringify(dbPriceListID) %>;
+    const inputPriceListID = document.querySelector('#priceListID');
+    const listaComparar = [];
+    const inputP = document.querySelector('#priceListIDP');
+    const btnSend = document.querySelector('#btn-send')
+    const priceListName = document.querySelector('#priceListName')
+
+    for (let i = 0; i < idlist.length; i++) {
+        listaComparar.push(idlist[i].priceListID);
+    }
+
+    function lista_id() {
+        const inputValue = inputPriceListID.value;
+        if (listaComparar.includes(inputValue)) {
+            inputP.innerText = 'código ya existe';
+            btnSend.disabled = true;
+
+        }
+        else{
+            inputP.innerText = '';
+            btnSend.disabled = false;
+        }
+    }
+    
+    
+    function namePriceList(){
+        const mayuscula = priceListName.value.toUpperCase();
+        priceListName.value = mayuscula
+
+    }
+    
+    inputPriceListID.addEventListener('input', lista_id);
+    priceListName.addEventListener('input', namePriceList)
+</script>

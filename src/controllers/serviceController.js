@@ -1,8 +1,8 @@
-import { getServices, createService } from '../models/serviceModel.js';
+import Service from '../models/serviceModel.js';
 
 const getServicesController = async (req, res)=>{
     try {
-        const servicios = await getServices();
+        const servicios = await Service.find();
         return servicios;
     } catch (error) {
         console.log(error)
