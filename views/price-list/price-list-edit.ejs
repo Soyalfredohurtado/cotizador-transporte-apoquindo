@@ -20,7 +20,7 @@
                                              
                             <div class="col-sm-8">
                                 <label for="priceListName" class="form-label form-label-sm m-0">Nombre</label>
-                                <input type="text" class="form-control form-control-sm" id="priceListName" name="priceListName" required>
+                                <input type="text" value="<%= priceListData.priceListName %>" class="form-control form-control-sm" id="priceListName" name="priceListName" required>
                                 <div class="invalid-feedback">
                                     Este campo es obligatorio.
                                 </div>
@@ -97,27 +97,31 @@
                         </div>
                         <div>        
                             <div class="form-check form-switch">
-                                <input type="checkbox" class="form-check-input" id="priceListStatus" name="priceListStatus" checked >
-                                <label for="priceListStatus">hanilitada</label>
+                                <input type="checkbox" class="form-check-input" id="priceListStatus" name="priceListStatus" checked  
+                                <% if (viewType === 'view' ) { %>disabled<%}  %>>
+                                <label for="priceListStatus">Habilitado</label>
                             </div>                    
                         </div>
                     </div>
-                    <div class="col-lg-4 p-3 bg-info">
-                        <h3 class="text-center h5">Asignar a Servicios</h3>
-                        <% services.forEach(service => { %>
-                            <% if (priceListData.priceListService.includes(service.serviceID)) { %>
-                                <div class="form-check form-switch">
-                                    <input type="checkbox" value="<%= service.serviceID %>" class="form-check-input" name="priceListService" checked disabled>
-                                    <label for="priceListService"><%= service.serviceName %></label>
-                                </div>
-                            <% } else { %>
-                                <div class="form-check form-switch">
-                                    <input type="checkbox" value="<%= service.serviceID %>" class="form-check-input" name="priceListService" disabled>
-                                    <label for="priceListService"><%= service.serviceName %></label>
-                                </div>
-                            <% } %>
-                        <% }) %>
-                    
+                    <div class="col-lg-4">
+                        <h3 class="text-center h5"><% if (viewType === 'view' ) { %>Asignar Servicios<%} else{ %> Servicios Asignados <% } %></h3>
+                        <div class="bg-light p-2">
+                            <% services.forEach(service => { %>
+                                <% if (priceListData.priceListService.includes(service.serviceID)) { %>
+                                    <div class="form-check form-switch">
+                                        <input type="checkbox" value="<%= service.serviceID %>" class="form-check-input" name="priceListService" checked disabled>
+                                        <label for="priceListService"><%= service.serviceName %></label>
+                                    </div>
+                                <% } else { %>
+                                    <div class="form-check form-switch">
+                                        <input type="checkbox" value="<%= service.serviceID %>" class="form-check-input" name="priceListService" disabled>
+                                        <label for="priceListService"><%= service.serviceName %></label>
+                                    </div>
+                                <% } %>
+                            <% }) %>    
+
+                        </div>
+                                       
                         <div class="row p-2 text-end">
                             <div class="col-md-6 px-3 py-1">
                                 <button type="reset" class="btn btn-secondary w-100" <%= priceListData ? 'hidden' : '' %> > limpiar</button>

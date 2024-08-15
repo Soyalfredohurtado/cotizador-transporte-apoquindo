@@ -51,6 +51,7 @@ router.get('/view/:priceListID', async (req, res) => {
                 btnEdit: 'readonly',
                 services,
                 priceListData,
+                viewType: 'view'
             });
         }else {
             res.redirect('/lista-de-precios');

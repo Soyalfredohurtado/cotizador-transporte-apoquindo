@@ -3,11 +3,11 @@
 <body>
     <%- include('../nav/nav', {title: title}) %>
     <div class="container">
-        <div class="card p-3 m-3">
-            <h1 class=" text-center h4">Nueva lista de precios</h1>
+        <div class="p-3 m-3 card">            
             <form action="/lista-de-precios/nueva-lista" method="post" >
-                <div class="row" >           
+                <div class="row" >
                     <div class="col-lg-8 px-3 py-0">
+                        <h1 class=" text-center h4">Nueva lista de precios</h1>
                         <div class="row mb-2">
                             <div class="col-sm-4">
                                 <label for="priceListID" class="form-label form-label-sm m-0">Código</label>
@@ -88,21 +88,23 @@
                                 <textarea id="priceListObservation" name="priceListObservation" class="form-control" maxlength="45" rows="2"></textarea>
                             </div>
                         </div>
-                        <div>        
-                            <div class="form-check form-switch">
-                                <input type="checkbox" class="form-check-input" id="priceListStatus" name="priceListStatus" checked >
-                                <label for="priceListStatus">hanilitada</label>
-                            </div>                    
+                            
+                        <div class="form-check form-switch mb-2">
+                            <input type="checkbox" class="form-check-input" id="priceListStatus" name="priceListStatus" checked value="true" disabled>
+                            <label for="priceListStatus">lista Habilitada </label>
                         </div>
                     </div>
-                    <div class="col-lg-4 p-3 bg-info">
-                        <h3 class="text-center h5">Asignar a Servicios</h3>
+                    
+                    <div class="col-lg-4 px-3 py-0">
+                        <h3 class="text-center h4 mb-2">Asignar a Servicios</h3>
                         <% services.forEach (service => { %>
                             <div class="form-check form-switch">
                                 <label for="<%= service.serviceName %>">
                                 <input type="checkbox" value="<%= service.serviceID %>" class="form-check-input" id="<%= service.serviceName %>" name="priceListService" >
                                <%= service.serviceName %></label>
-                                <i class="fa-solid fa-circle-info text-light"></i>
+
+                            <a type="button" class="btn" data-bs-toggle="tooltip" data-bs-placement="bottom" title="<%= service.serviceObservation %>"><i class="fa-solid fa-circle-info text-info"></i></a>
+                                
                             </div>
                         <% }) %> 
                     
@@ -155,6 +157,16 @@
     
     inputPriceListID.addEventListener('input', lista_id);
     priceListName.addEventListener('input', namePriceList)
+</script>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl);
+        });
+    });
 </script>
 
 <script src="/assets/js/fuctionPriceList.js"></script>

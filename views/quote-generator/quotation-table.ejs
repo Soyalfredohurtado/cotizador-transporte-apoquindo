@@ -3,52 +3,53 @@
 <body>
     <%- include('../nav/nav', {title: title}) %>
     <div class="container">
-        <div class="row row-title p-2">
+        <div class="row m-2 p-0">
             <div class="col-6">
                 <a class="btn btn-success" href="/cotizador/nueva-cotizacion"><b>+</b> Agregar</a>
-
             </div>
             <div class="col-6">
-                <h1 class="h1 text-end"><%= title %></h1>
+                <h1 class="h2 text-end m-0 mx-3 p-0"><%= title %></h1>
             </div>
         </div>
-        <div>
-            <table class="table table-hover table-responsive">
-                <thead>
-                    <tr>
-                        <th style="width: 8%;">Nro Cotizacion</th>
-                        <th>Monto</th>
-                        <th>Dirección</th>
-                        <th>Status</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>                    
-                    <%quoters.forEach (quoter =>{ %>                        
+
+        <div class="card shadow p-2">
+            <div class="table-responsive">
+                <table class="table table-hover table-bordered m-0 p-0">
+                    <thead class="bg-light text-center">
                         <tr>
-                            <td style="width: 8%;"> 00000 </td>
-                            <td>25.000</td>
-                            
-                            <td>
-                                <div>
-                                    <i class="fa-solid fa-location-dot" style="font-size: 0.8rem;"></i> <%= quoter.quoterOrigin %>
-                                </div>
-                                <div>
-                                    <i class="fa-solid fa-location-dot" style="font-size: 0.8rem;"></i> <%= quoter.quoterDestination %>
-                                </div>
-                            </td>    
-                            <td>Pendiente</td>  
-                            <td>
-                                <!-- view -->
-                                <button class="btn text-success" disabled title="ver servicio"><i class="fa-solid fa-eye"></i></button>
-                                <!-- view -->
-                                <button class="btn text-success" disabled title="ver servicio"><i class="fa-solid fa-eye"></i></button>
-                            </td> 
+                            <th style="width: 8%;">Nro Cotizacion</th>
+                            <th>Monto</th>
+                            <th>Dirección</th>
+                            <th>Status</th>
+                            <th>Acciones</th>
                         </tr>
-                    <% }) %>  
-                   
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>                    
+                        <%quoters.forEach (quoter =>{ %>                        
+                            <tr>
+                                <td class="text-center my-auto" style="width: 13%;"> 00000 </td>
+                                <td>25.000</td>                                
+                                <td>
+                                    <div>
+                                        <i class="fa-solid fa-location-dot" style="font-size: 0.8rem;"></i> <%= quoter.quoterOrigin %>
+                                    </div>
+                                    <div>
+                                        <i class="fa-solid fa-location-dot" style="font-size: 0.8rem;"></i> <%= quoter.quoterDestination %>
+                                    </div>
+                                </td>    
+                                <td>Pendiente</td>  
+                                <td>
+                                    <!-- view -->
+                                    <button class="btn text-success" disabled title="ver servicio"><i class="fa-solid fa-eye"></i></button>
+                                    <!-- view -->
+                                    <button class="btn text-success" disabled title="ver servicio"><i class="fa-solid fa-eye"></i></button>
+                                </td> 
+                            </tr>
+                        <% }) %>  
+                       
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>  
 </body>

@@ -10,7 +10,6 @@ items.map(item => {
 function itemChecked(element) {
     let item = document.querySelector(`#priceList${element}`);
     let itemCheck = document.querySelector(`#priceList${element}Status`);
-   
     
     if (itemCheck.value === 'on') {
         item.value = 0;
@@ -20,7 +19,7 @@ function itemChecked(element) {
     } else {
         item.value = '';
         item.readOnly = false;
-        item.className = 'text-danger text-end';
+        item.className = 'text-dark text-end';
         itemCheck.value = 'on';
     }
 }

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<%- include('../template/header', {title:title}) %>
+<body>
+    <%- include('../nav/nav', {title: title}) %>
+    <div class="container">
+        <div class="m-2 card">
+            <form action="/servicios/edit/<%= serviceByKey.serviceID %>" method="POST" id="serviceForm">
+                <div class="row px-4" >                
+                    <div class="px-4 <% if (viewType === 'edit' ) { %>col-md-7<%} else{ %>col-md-5<%} %> ">
+                        <div class="bg-light">
+                            <h2 class="h4 text-center mt-2">Detalle Servicio</h2>
+                        </div>      
+                        <dl class="row">
+                            <dt class="col-5">Código:</dt>
+                            <dd class="col-7">
+                                <input type="text" readonly class="form-control-plaintext text-danger <% if (viewType === 'edit' ) { %>bg-secondary text-center text-white<%} %>"id="serviceID" value="<%= serviceByKey.serviceID %>">
+                            </dd>
+                        
+                            <dt class="col-5">Nombre:</dt>
+                            <dd class="col-7">
+                                <input type="text" <% if (viewType !== 'edit' ) { %>readonly<%} %> class="form-control-plaintext 
+                                    <% if (viewType === 'edit' ) { %>text-center<%} %>"
+                                    id="serviceName" name='serviceName' value="<%= serviceByKey.serviceName %>">
+                            </dd>
+                        
+                            <dt class="col-5">Cant Pasajero:</dt>
+                            <dd class="col-7">
+                                <input type="number" name="servicePassengerCapacity" min="0"
+                                    <% if (viewType !== 'edit' ) { %>readonly<%} %>
+                                    class="form-control-plaintext <% if (viewType === 'edit' ) { %>text-center<%} %>"
+                                    id="passengerCount" value="<%= serviceByKey.servicePassengerCapacity %>" >
+                            </dd>
+                            <dt class="col-5">Observación:</dt>
+                            <dd class="col-7">
+                                <textarea type="text" name="serviceObservation" <% if (viewType !== 'edit' ) { %>readonly<%} %> class="form-control-plaintext <% if (viewType ==='edit' ) { %>bg-success-subtle <%} %>" id="observation"><%= serviceByKey.serviceObservation %></textarea>
+                            </dd>
+                            <dt class="col-5">Habilitado:</dt>
+                            <dd class="col-7">
+                                <div class="form-check form-switch">
+                                    <input type="checkbox" id="serviceStatus" value="<%= serviceByKey.serviceStatus %>" name="serviceStatus" <% if (serviceByKey.serviceStatus == 1 ){ %> checked <%} else %>
+                                    <% if (viewType !== 'edit' ) { %>disabled<%}  %>
+                                    class="form-check-input" >
+                                </div>
+                            </dd>
+                        </dl>
+                        <div class="text-center mb-3">
+                            <a href="/servicios" class="btn btn-outline-secondary" title="editar servicio" <% if (viewType !== 'view' ) { %>hidden<%}%>> 
+                                <i class="fa-solid fa-arrow-left" ></i> Volver
+                            </a>
+                            <a href="/servicios/view/<%= serviceByKey.serviceID %>/edit" class="btn btn-warning" title="editar servicio" <% if (viewType !== 'view' ) { %>hidden<%}%>> 
+                                <i class="fa-solid fa-pen-to-square"></i> Editar
+                            </a>
+                            <a href="/servicios/view/<%= serviceByKey.serviceID %>" class="btn btn-secondary" title="editar servicio" <% if (viewType !== 'edit' ) { %>hidden<%} %>> 
+                                Cancelar
+                            </a>
+                            <button form="serviceForm" class="btn btn-success" title="editar servicio" <% if (viewType !== 'edit' ) { %>hidden<%} %>> 
+                                Actualizar
+                            </button>
+                        </div>                    
+                    </div>
+                    <div class="col-md-7 p-2" <% if (viewType === 'edit' ) { %>hidden<%} %>>
+                        <div class="bg-light">
+                            <h2 class="h4 text-center">Historial</h2>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-sm table-hover table-bordered m-0 p-0">
+                                <thead>
+                                    <tr class="text-center">
+                                        <th>Código Unico</th>
+                                        <th>Servicio </th> 
+                                        <th>cant. pasajeros</th>
+                                        <th>Status</th>                       
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>                    
+                                    <% services.forEach (service =>{%>
+                                    <tr class="<% if (service.serviceStatus === 1 ) { %>''<%} else{ %>text-secondary<% } %>">
+                                        <td class="text-center"><%= service.serviceID %></td>
+                                        <td><%= service.serviceName %></td>
+                                        <td><%= service.servicePassengerCapacity %> pasajeros</td>
+                                        <td class="text-center"><% if (service.serviceStatus === 1 ) { %>habilitado<%} else{ %>deshabilitado<% } %></td>
+                                        <td class="text-center m-0 p-0" style="min-width: 60px;">
+                                            <!-- comment -->
+                                            <i class="fa-solid fa-comment text-secondary"></i>
+                                            <!-- view -->
+                                            <a class="btn m-0 p-0 text-success" href="/servicios/view/<%= service.serviceID %>" title="ver servicio"><i class="fa-solid fa-eye"></i><a>
+                                        </td>
+                                    </tr>
+                                    <% }) %>
+                                </tbody>
+                            </table>                            
+                        </div>
+                    </div>                
+                </div>
+            </form>
+        </div>
+    </div>
+    <script>
+        let serviciosID = [];// no borrar 
+        const serviceStatus = document.querySelector('#serviceStatus')
+
+        function valueCheckBox(){
+            if(serviceStatus.value == 1){
+                serviceStatus.value = 0;
+            }else{
+                serviceStatus.value = 1;
+            }
+            console.log(' nuevo valor check -->', serviceStatus);
+        }
+
+        serviceStatus.addEventListener('change', valueCheckBox)
+    </script>
+    <script src="/assets/js/fuctionServices.js"></script> 
+</body>
+</html>
+
+

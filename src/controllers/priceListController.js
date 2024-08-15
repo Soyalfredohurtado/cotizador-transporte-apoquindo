@@ -35,7 +35,6 @@ const createPriceListController = async(req, res) => {
         const {priceListID, priceListName, priceListStatus, priceListObservation, priceListBandera, priceListBanderaStatus, priceListKilometros, priceListKilometrosStatus,priceListMinutos, priceListMinutosStatus, priceListTAG, priceListTAGStatus, priceListPeajes, priceListPeajesStatus, priceListService } = req.body; 
 
         const newPriceList = new PriceList({
-            
             priceListID,
             priceListName,
             priceListObservation,

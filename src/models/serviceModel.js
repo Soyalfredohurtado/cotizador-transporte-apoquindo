@@ -5,7 +5,7 @@ const { Schema }= mongoose;
 const serviceSchema = new Schema({
     serviceID: { type: String, required: true, uniqued:true },
     serviceName: { type: String, required: true, uniqued:true }, 
-    serviceStatus: { type: Number, required: true},
+    serviceStatus: { type: Boolean, required: true},
     serviceObservation: { type: String, required:true },
     servicePassengerCapacity: { type: Number, required:true },
     created_at: { type: Date, default: Date.now }

@@ -12,19 +12,77 @@ const getServicesController = async (req, res)=>{
 
 const createServiceController = async (req) =>{
     try {
-        const { serviceID, serviceName, serviceStatus, serviceObservation, servicePassengerCapacity} = req.body
-        await createService({
+        const { serviceID, serviceName, serviceStatus, serviceObservation, servicePassengerCapacity} = req.body;
+        const newService = new Service({
             serviceID,
             serviceName,
             serviceStatus,
             serviceObservation,
             servicePassengerCapacity
         })
+        await newService.save()
     } catch (error) {
         console.error(error)     
     }
 }
 
-export { getServicesController, createServiceController}
+const getServicesByIDController = async(req, res)=>{
+    try {
+        const servicesList = await Service.find({}, 'serviceID');
+        let services = [];
+        for(let i = 0; i < servicesList.length; i++){
+            services.push(servicesList[i].serviceID);
+        }
+        return services;
+
+    } catch (error) {
+        console.log(error)
+        throw error;
+    }
+}
+
+const getSerciceByKeyController = async(key)=>{
+    try {
+        const serviceData = await Service.findOne({ serviceID: key});
+        return serviceData;
+    } catch (error) {
+        console.log(error)
+        throw error;
+    }
+}
+
+const updateServiceController = async (req, res) => {
+    try {
+        const { serviceid } = req.params;
+        console.log('controller id: ', serviceid);
+
+        const { serviceName, serviceStatus, serviceObservation, servicePassengerCapacity } = req.body;
+        
+        // Busca el servicio por su serviceid
+        const service = await Service.findOne({ serviceID: serviceid }); // Asegúrate de usar el nombre correcto del campo en la base de datos
+
+        
+        if (service) {
+            // Actualiza los campos del servicio
+            service.serviceName = serviceName || service.serviceName;
+            service.serviceStatus = (serviceStatus == 1 || serviceStatus == true)   ? true : false;
+            service.serviceObservation = serviceObservation || service.serviceObservation;
+            service.servicePassengerCapacity = servicePassengerCapacity || service.servicePassengerCapacity;
+
+            // Guarda los cambios
+            await service.save();
+            console.log('nuevos valores ', service);
+        } else {
+            console.log('error en el controller al actulizar el servicio',error)
+            throw error;
+        }
+    } catch (error) {
+        console.log('error en el controller al actulizar el servicio',error)
+        throw error;
+    }
+};
+
+
+export { getServicesController, createServiceController, getServicesByIDController, getSerciceByKeyController, updateServiceController}
 
 

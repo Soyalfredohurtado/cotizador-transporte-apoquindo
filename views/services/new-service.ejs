@@ -3,47 +3,58 @@
 <body>
     <%- include('../nav/nav', {title: title}) %>
     <div class="container p-4">
-        <div class="card shadow mx-aut col-6">
-            <div class="card-header">
-                <h1 class="h4 text-center"><%= title %></h1>
+        <div class="row">
+            <div class="col-md-2">
             </div>
-            <div class="card-body ">
-                <form action="/servicios/nuevo-servicio" method="post">
-                    <div class="form-floating mb-2">
-                        <input type="text"  class="form-control form-control-sm" name="serviceID" id="serviceID" placeholder="0000" maxlength="4" required>
-                        <label for="serviceID">Código Unico</label>                       
+            <div class="col-md-8">
+                <div class="card shadow mx-auto">
+                    <div class="card-header bg-secondary m-0 p-0">
+                        <h1 class="h4 text-center text-white m-2 p-0"><%= title %></h1>
                     </div>
-                    <div class="form-floating mb-2">
-                        <input type="text" class="form-control form-control-sm" name="serviceName" id="serviceName" placeholder="Nombre"  required>
-                        <label for="serviceName">Servicio</label>                       
+                    <div class="card-body ">
+                        <form action="/servicios/nuevo-servicio" method="post">
+                            <div class="form-floating mb-2">
+                                <input type="text"  class="form-control form-control-sm" name="serviceID" id="serviceID" placeholder="0000" maxlength="4" required>
+                                <label for="serviceID">Código Unico</label>  
+                                <small id="idExists" class="text-danger"></small>                    
+                            </div>
+                            <div class="form-floating mb-2">
+                                <input type="text" class="form-control form-control-sm" name="serviceName" id="serviceName" placeholder="Nombre"  required>
+                                <label for="serviceName">Servicio</label>                       
+                            </div>
+                            
+                            <div class="form-floating mb-2">
+                                <input type="number" class="form-control form-control-sm" name="servicePassengerCapacity" id="servicePassengerCapacity" placeholder="0" step="1" min="1"  required>
+                                <label for="servicePassengerCapacity">Capacidad de pasajeros</label>                       
+                            </div> 
+        
+                            <div class="form-floating mb-2">
+                                <input type="text" class="form-control form-control-sm" name="serviceObservation" id="serviceObservation" placeholder="Nombre"  required>
+                                <label for="serviceObservation">Observaciones</label>                       
+                            </div>                     
+                            <div class="form-floating mb-2">
+                                <select class="form-control form-control-sm" name="serviceStatus" value="1" required>
+                                    <option value="true">Habilitado</option>
+                                    <option value="false">Deshabilitado</option>
+                           
+                                </select>
+                                <label for="userDepartment">Estatus</label>
+                            </div>
+                            <div class="text-end">
+                                <a class="btn btn-outline-secondary" href="/" style="width: 100px;">Cancelar</a>
+                                <button type="submit" class="btn btn-success disabled" style="width: 100px;" id="btnSend">Agregar</button>
+                            </div>
+                        </form>                
                     </div>
-                    
-                    <div class="form-floating mb-2">
-                        <input type="number" class="form-control form-control-sm" name="servicePassengerCapacity" id="servicePassengerCapacity" placeholder="0" step="1" min="1"  required>
-                        <label for="servicePassengerCapacity">Capacidad de pasajeros</label>                       
-                    </div> 
-
-
-
-                    <div class="form-floating mb-2">
-                        <input type="text" class="form-control form-control-sm" name="serviceObservation" id="serviceObservation" placeholder="Nombre"  required>
-                        <label for="serviceObservation">Observaciones</label>                       
-                    </div>                     
-                    <div class="form-floating mb-2">
-                        <select class="form-control form-control-sm" name="serviceStatus" value="1" required>
-                            <option value="1">Habilitado</option>
-                            <option value="0">Deshabilitado</option>
-                   
-                        </select>
-                        <label for="userDepartment">Estatus</label>
-                    </div>
-                    <div class="text-end">
-                        <a class="btn btn-outline-secondary" href="/" style="width: 100px;">Cancelar</a>
-                        <button type="submit" class="btn btn-primary" style="width: 100px;">Agregar</button>
-                    </div>
-                </form>                
+                </div>
             </div>
+            <div class="col-md-2"></div>
         </div>
     </div>
+    <script>
+        // The list of service IDs is obtained to be used in JS
+        let serviciosID = <%- JSON.stringify(seviceListID_) %>;
+    </script>
+    <script src="/assets/js/fuctionServices.js"></script> 
 </body>
 </html>

@@ -3,60 +3,57 @@
 <body>
     <%- include('../nav/nav', {title: title}) %>
     <div class="container">
-        <div class="row row-title p-2">
+        <div class="row m-2 p-0">
             <div class="col-6">
-                <a class="btn btn-success" href="/servicios/nuevo-servicio"><b>+</b> Agregar </a>               
-
+                <a class="btn btn-success" href="/servicios/nuevo-servicio"><b>+</b> Agregar </a> 
             </div>
             <div class="col-6">
-                <h1 class="h1 text-end"><%= title %></h1>
+                <h1 class="h2 text-end m-0 mx-3 p-0"><%= title %></h1>
             </div>
         </div>
-        <div>
-            <table class="table table-hover table-responsive">
-                <thead>
-                    <tr>
-                        <th>Código Unico</th>
-                        <th>Servicio </th> 
-                        <th>cant. pasajeros</th>
-                        <th>Status</th>                       
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-
-                    <% services.forEach (service =>{%>
-                    <tr>
-                        <td><%= service.serviceID %></td>
-                        <td><%= service.serviceName %></td>
-                        <td><%= service.servicePassengerCapacity %> pasajeros</td>
-                        <td><% if (service.serviceStatus === 1 ) { %>habilitado<%} %></td>
-                        <td>
-                            <!-- comment -->
-                            <button class="btn text-success" disabled title="info servicio"><i class="fa-solid fa-comment"></i></button>
-                            <!-- view -->
-                            <button class="btn text-success" disabled title="ver servicio"><i class="fa-solid fa-eye"></i></button>
-                            <!-- edit -->
-                            <button class="btn text-warning" disabled title="editar servicio" ><i class="fa-solid fa-pen-to-square"></i></button>
-                            <!-- disabled -->
-                            <button class="btn text-danger" disabled title="deshabilitar servicio"> <i class="fa-solid fa-ban"></i></button>
-                        </td>
-                    </tr>
-                    <% }) %>
-
-                    
-        
-
-                </tbody>
-                
-
-
-                <tbody> 
-                             
-                </tbody>                
-            </table>
+        <div class="card shadow p-2">
+            <div class="table-responsive">
+                <table class="table table-hover table-bordered m-0 p-0">
+                    <thead class="bg-light text-center">
+                        <tr>
+                            <th>Código Unico</th>
+                            <th>Servicio </th> 
+                            <th>cant. pasajeros</th>
+                            <th>Status</th>                       
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>    
+                        <% services.forEach (service =>{ %>
+                        <tr class="<% if (service.serviceStatus === true ) { %>'text-dark'<%} else{ %>text-secondary<% } %>">
+                            <td class="text-center"><%= service.serviceID %></td>
+                            <td><%= service.serviceName %></td>
+                            <td class="text-center"><%= service.servicePassengerCapacity %> pasajeros</td>
+                            <td class="text-center"><% if (service.serviceStatus === true  ){ %>habilitado<%} else if (service.serviceStatus === false ){ %>deshabilitado<% } %></td>
+                            <td class="text-center m-0 p-0">
+                                <a type="button" class="btn" data-bs-toggle="tooltip" data-bs-placement="left" title="<%= service.serviceObservation %>">
+                                    <i class="fa-solid fa-comment"></i>
+                                </a>
+                                <!-- view -->
+                                <a class="btn text-success" href="/servicios/view/<%= service.serviceID %>" title="ver servicio"><i class="fa-solid fa-eye"></i></a>
+                                <!-- edit -->
+                                <a href="/servicios/view/<%= service.serviceID %>/edit" class="btn text-warning" disabled title="editar servicio" ><i class="fa-solid fa-pen-to-square"></i></a>
+                            </td>
+                        </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            </div>
         </div>
-    </div>  
+    </div> 
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl);
+            });
+        });
+    </script>
 </body>
 </html>
 
