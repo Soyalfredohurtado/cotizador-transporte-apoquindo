@@ -19,9 +19,12 @@
           <li class="nav-item">
             <a class="nav-link <% if (view === 'price-list') { %>active<%} %>" href="/lista-de-precios">Lista Precios</a>
           </li>
-          <li class="nav-item">
+          <li class="nav-item" <% if (dataUser.userRol !== 'r1') { %> hidden <%} %> >
             <a class="nav-link <% if (view === 'users') { %>active<%} %>" href="/usuarios">Usuarios</a>
-          </li>          
+          </li> 
+          <li class="nav-item" >
+            <a class="nav-link"> user: <%= dataUser.userFirstName %>  //  <%= dataUser.userRol %></a>
+          </li>     
           <li class="nav-item">
             <a class="nav-link" href="/">Salir</a>
           </li>

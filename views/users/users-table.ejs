@@ -3,35 +3,46 @@
 <body>
     <%- include('../nav/nav', {title: title}) %>
     <div class="container">
-        <div class="row row-title p-2">
-            <div class="col-6">               
-
+        <div class="row m-2 p-0">
+            <div class="col-6">
+                
             </div>
             <div class="col-6">
-                <h1 class="h1 text-end"><%= title %></h1>
+                <h1 class="h2 text-end m-0 mx-3 p-0"><%= title %></h1>
             </div>
         </div>
-        <div class="card p-4"> 
-            <table class="table table-hover table-responsive">
-                <thead>
-                    <tr>
-                        <th>Nombre</th>
-                        <th>Status</th>
-                        <th>Rol</th>
-                        <th>Acciones</th>                     
-                    </tr>
-                </thead>
-                <tbody>
-                    <% users.forEach (user =>{ %>
-                        <tr>
-                            <td><%= user.userFirstName %></td>
-                            <td><%= user.userLastName %></td>
-                            <td><%= user.userDepartment %></td>
-                            <td><button>ver</button></td>       
+        <div class="card shadow p-2"> 
+            <div class="table-responsive">
+                <table class="table table-hover table-bordered m-0 p-0">
+                    <thead>
+                        <tr class="bg-light text-center">
+                            <th>Nombre</th>
+                            <th>Status</th>
+                            <th>Rol</th>
+                            <th>Acciones</th>                     
                         </tr>
-                    <% }) %>                  
-                </tbody>                
-            </table>
+                    </thead>
+                    <tbody>
+                        <% users.forEach (user =>{ %>
+                            <tr>
+                                <td><%= user.userFirstName %></td>
+                                <td><%= user.userLastName %></td>
+                                <td>
+                                    <% if (user.userDepartment == 'd1') { %>
+                                        Administracion
+                                    <% } else if (user.userDepartment == 'd2') { %>
+                                        Operaciones
+                                    <% } else if (user.userDepartment == 'd3') { %>
+                                        Flota
+                                    <% } %>
+                                </td>
+
+                                <td><a href="/usuarios/view/<%= user.userID %>"> ver </a> </td>       
+                            </tr>
+                        <% }) %>                  
+                    </tbody>                
+                </table>
+            </div>
         </div>
     </div>  
 </body>

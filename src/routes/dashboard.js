@@ -4,7 +4,8 @@ const router = express.Router();
 
 
 router.get('/', (req, res) =>{
-    res.render('dashboard/dashboard.ejs', {title: 'Dashboard', view:'dashboard'})
+    let dataUser = req.session;
+    res.render('dashboard/dashboard.ejs', {title: 'Dashboard', view:'dashboard', dataUser })
 })
 
 export default router;

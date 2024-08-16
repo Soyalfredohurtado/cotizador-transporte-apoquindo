@@ -1,13 +1,17 @@
 <!DOCTYPE html>
 <%- include('../template/header', {title:title}) %>
-<body>
-    <div class="container p-4">
-        <div class="card shadow mx-aut col-6">
-            <div class="card-header">
-                <h1 class="h4 text-center"><%= title %></h1>
+<body style="padding: 0px;">
+    <div class="container">
+        <div class="card shadow mx-auto mt-2" style="width: 550px;">
+            <div class="card-header bg-primary text-white p-2">
+                <h1 class="h4 text-center p-0 m-0"><%= title %></h1>
             </div>
             <div class="card-body ">
                 <form action="/usuarios/nuevo-usuario" method="post">
+                    <div class="form-floating mb-2">
+                        <input type="number" value="" class="form-control form-control-sm" name="userID" id="userID" placeholder="Nombre" required>
+                        <label for="userID">UsuarioID</label>                       
+                    </div>
                     <div class="form-floating mb-2">
                         <input type="text" value="" class="form-control form-control-sm" name="userFirstName" id="userFirstName" placeholder="Nombre" required>
                         <label for="userFirstName">Nombre</label>                       
@@ -17,7 +21,7 @@
                         <label for="userLastName">Apellido</label>
                     </div>
                     <div class="form-floating mb-2">
-                        <input type="text" class="form-control form-control-sm" name="userDocumentNumber" id="DocumentNumber" placeholder="12345678-9" required>
+                        <input type="text" class="form-control form-control-sm" name="userDocumentNumber" id="userDocumentNumber" placeholder="12345678-9" required>
                         <label for="userDocumentNumber">RUN</label>
                     </div>
                     <div class="form-floating mb-2">
@@ -26,12 +30,30 @@
                     </div>
                     <div class="form-floating mb-2">
                         <select class="form-control form-control-sm" name="userDepartment" required>
-                            <option value="" disabled selected>Seleccione area del trabajador</option>
-                            <option value="comercial">Comercial</option>
-                            <option value="operaciones">Operaciones</option>
-                            <option value="flota">Flota</option>
+                            <option value="" disabled selected>Seleccione area del trabajador</option>                          
+                            <option value="d1">Administración</option>
+                            <option value="d2">Operaciones</option>
+                            <option value="d3">Flota</option>
                         </select>
                         <label for="userDepartment">Departamento</label>
+                    </div>
+                    <div class="form-floating mb-2" hidden >
+                        <select class="form-control form-control-sm" value="r0" name="userRol" required>
+                            <option value="r0">sin asignación</option>
+                            <option value="r1">Administrador</option>
+                            <option value="r2">SuperAdmin</option>
+                            <option value="r3">General</option>
+                        </select>
+                        <label for="userDepartment">Rol</label>
+                    </div>
+                    <div class="form-floating mb-2" hidden >
+                        <select class="form-control form-control-sm" value="s0" name="userStatus" required>                        
+                            <option value="s0">sin asignación</option>
+                            <option value="s1">pendiente</option>
+                            <option value="s2">activo</option>
+                            <option value="s3">deshabilitado</option>
+                        </select>
+                        <label for="userDepartment">Status</label>
                     </div>
                     <div class="form-floating mb-2">
                         <input type="password" class="form-control form-control-sm" name="userPassword" id="userPassword" placeholder="email@email.cl" required>
@@ -57,5 +79,14 @@
             </div>
         </div>
     </div>
+    <script>    
+        function formaterRUN(){
+            const userDocumentNumber = document.querySelector('#userDocumentNumber');
+            let runFormateado = ''
+            let rutLimpio = ''
+            return runFormateado;
+        }
+        userDocumentNumber.addEventListener('input', formaterRUN);
+    </script>
 </body>
 </html>

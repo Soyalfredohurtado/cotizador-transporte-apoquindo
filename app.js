@@ -1,12 +1,10 @@
 import express from 'express';
-import bcrypt from 'bcrypt';
 import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
-import { Schema } from 'mongoose';
-import { name } from 'ejs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
+import session  from 'express-session';
 
 //routers
 import userRouter from  './src/routes/users.js'
@@ -20,6 +18,16 @@ const app = express();
 const port = 3000;
 
 const mongoUri = 'mongodb://localhost:27017/cotizador-transporte-apoquindo';
+
+app.use(session({
+  secret:'mi_key', //cambiar
+  resave: false, 
+  saveUninitialized: false,
+  cookie:{
+    secure:false,
+    maxAge:600000
+  }
+}));
 
 mongoose.connect(mongoUri, {
     useNewUrlParser: true,
@@ -48,12 +56,6 @@ app.use('/', loginRouter);
 app.use('/cotizador', quoteGeneratorRouter)
 app.use('/servicios', serviceRouter)
 app.use('/lista-de-precios', priceListRouter)
-
-app.get('/', (req, res) => {
-    res.render('login/login.ejs', {title: 'Login'})
-    console.log('Ingresaste al login');
-});
-
 
 app.listen(port, ()=> console.log('ingresaste al port: ' + port));
     

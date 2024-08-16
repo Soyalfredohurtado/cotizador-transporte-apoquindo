@@ -1,0 +1,20 @@
+rol:
+    -   r0   sin asignaciónn
+    -   r1   admin
+    -   r2   superAdmin
+    -   r3   general 
+
+status:
+    -   s0   sin asignaciónn
+    -   s1   pendiente
+    -   s2   activo
+    -   s3   deshabilitado
+
+departtamento:
+    -   d0   sin asignaciónn
+    -   d1  administración
+    -   d2  operaciones
+    -   d3  Flota
+
+
+    

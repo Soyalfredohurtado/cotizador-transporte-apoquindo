@@ -1,25 +1,35 @@
 <!DOCTYPE html>
 <%- include('../template/header', {title:title}) %>
-<body>
-    <div class="container div-login">
-        <div class="card col-6 card-login shadow">
+<body>    
+    <div class="container">
+        <div>
+            <% if (typeof alertMessage !== 'undefined'){%>
+                <div class="alert alert-<%= alertType %> alert-dismissible fade show" role="alert">
+                    <%= alertMessage %>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            <% } %>        
+        </div>
+        <div class="card shadow mx-auto" style="width: 400px;">
             <div class="body ">
                 <div class="img-login">
-                    <img src="/assets/img/logo-png-completo.png" alt="logo-appsfly" height="350px">
+                    <img src="/assets/img/logo-png-completo.png" class="w-100" alt="logo-appsfly">
                 </div>                
                 <form action="/" method="post">
-                    <div class="form-floating mb-2">
-                        <input type="email" class="form-control form-control-sm" name="userName" placeholder="email@email.cl" required>
-                        <label for="cotizadorOrigen">Correo Electrónico</label>
+                    <div class="p-3">
+                        <div class="form-floating mb-2">
+                            <input type="email" class="form-control form-control-sm" name="userName" placeholder="email@email.cl" required>
+                            <label for="cotizadorOrigen">Correo Electrónico</label>
+                        </div>
+                        <div class="form-floating">
+                            <input type="password" class="form-control form-control-sm" name="userPassword" placeholder="email@email.cl" required>
+                            <label for="cotizadorOrigen">Contraseña</label>
+                        </div>
                     </div>
-                    <div class="form-floating mb-2">
-                        <input type="password" class="form-control form-control-sm" name="userPassword" placeholder="email@email.cl" required>
-                        <label for="cotizadorOrigen">Contraseña</label>
-                    </div>
-                    <hr>
-                    <div class="mt-2 mb-2">
-                        <button type="submit" class="btn btn-primary w-100 m-1">Iniciar Sesión</button>
-                        <a class="btn btn-outline-secondary w-100 m-1" href="/usuarios/nuevo-usuario">Registrarme</a>
+                    <hr class="p-0 m-0">
+                    <div class="p-4">
+                        <button type="submit" class="btn btn-primary w-100 mb-2">Iniciar Sesión</button>
+                        <a class="btn btn-outline-secondary w-100" href="/usuarios/nuevo-usuario">Registrarme</a>
                     </div>
                 </form>
             </div>

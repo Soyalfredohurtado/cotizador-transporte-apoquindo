@@ -10,8 +10,9 @@ import { v4 as uuid4 } from 'uuid'
 const router = express.Router();
 
 router.get('/', async (req, res) => { 
+    let dataUser = req.session;
     const quoters = await getQuoterController()
-    res.render('quote-generator/quotation-table.ejs', {title:'Cotizador', view:'cotizador', quoters} )
+    res.render('quote-generator/quotation-table.ejs', {title:'Cotizador', view:'cotizador', quoters, dataUser} )
 })
 
 router.get('/nueva-cotizacion', async (req, res) => { 
