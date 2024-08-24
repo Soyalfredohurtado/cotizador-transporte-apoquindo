@@ -18,6 +18,8 @@
                         <tr class="bg-light text-center">
                             <th>Nombre</th>
                             <th>Status</th>
+                            <th>Status</th>
+                            <th>Departamento</th>
                             <th>Rol</th>
                             <th>Acciones</th>                     
                         </tr>
@@ -27,7 +29,18 @@
                             <tr>
                                 <td><%= user.userFirstName %></td>
                                 <td><%= user.userLastName %></td>
-                                <td>
+                                <td><!-- status -->
+                                    <% if (user.userStatus == 's1') { %>
+                                        Pendiente
+                                    <% } else if (user.userStatus == 's2') { %>
+                                       Activo
+                                    <% } else if (user.userStatus == 's3') { %>
+                                       Deshabilitado
+                                    <% } else if (user.userStatus == 's0') { %>
+                                        Sin Asignación
+                                    <% } %>
+                                </td>
+                                <td><!-- departamentos -->
                                     <% if (user.userDepartment == 'd1') { %>
                                         Administracion
                                     <% } else if (user.userDepartment == 'd2') { %>
@@ -36,8 +49,24 @@
                                         Flota
                                     <% } %>
                                 </td>
+                                <td><!-- rol -->
+                                    <% if (user.userRol == 'r1') { %>
+                                        Administración
+                                    <% } else if (user.userRol == 'r2') { %>
+                                        SuperAdmin
+                                    <% } else if (user.userRol == 'r3') { %>
+                                        General 
+                                    <% } else if (user.userRol == 'r0') { %>
+                                        Sin Asignar
+                                    <% } %>
+                                </td>
+                                <td class="text-center">
+                                    <!-- edit -->
+                                    <a href="/usuarios/edit/<%= user.userID %>" class="text-warning mx-1"><i class="fa-solid fa-pen-to-square"></i></a>
 
-                                <td><a href="/usuarios/view/<%= user.userID %>"> ver </a> </td>       
+                                    <!-- view -->
+                                    <a href="/usuarios/view/<%= user.userID %>" class="text-success mx-1"><i class="fa-solid fa-eye"></i></a>                                    
+                                </td>       
                             </tr>
                         <% }) %>                  
                     </tbody>                

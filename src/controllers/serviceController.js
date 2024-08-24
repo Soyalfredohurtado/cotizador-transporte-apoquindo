@@ -54,14 +54,11 @@ const getSerciceByKeyController = async(key)=>{
 const updateServiceController = async (req, res) => {
     try {
         const { serviceid } = req.params;
-        console.log('controller id: ', serviceid);
-
         const { serviceName, serviceStatus, serviceObservation, servicePassengerCapacity } = req.body;
         
         // Busca el servicio por su serviceid
-        const service = await Service.findOne({ serviceID: serviceid }); // Asegúrate de usar el nombre correcto del campo en la base de datos
+        const service = await Service.findOne({ serviceID: serviceid }); 
 
-        
         if (service) {
             // Actualiza los campos del servicio
             service.serviceName = serviceName || service.serviceName;
@@ -69,9 +66,7 @@ const updateServiceController = async (req, res) => {
             service.serviceObservation = serviceObservation || service.serviceObservation;
             service.servicePassengerCapacity = servicePassengerCapacity || service.servicePassengerCapacity;
 
-            // Guarda los cambios
             await service.save();
-            console.log('nuevos valores ', service);
         } else {
             console.log('error en el controller al actulizar el servicio',error)
             throw error;
@@ -81,7 +76,6 @@ const updateServiceController = async (req, res) => {
         throw error;
     }
 };
-
 
 export { getServicesController, createServiceController, getServicesByIDController, getSerciceByKeyController, updateServiceController}
 

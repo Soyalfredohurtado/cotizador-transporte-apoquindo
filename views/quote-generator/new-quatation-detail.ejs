@@ -1,7 +1,6 @@
 <div class="row">
-    <form action="/cotizador/nueva-cotizacion" method="post">
-        <input type="text" value="<%= quoterID %>" name="quoterID" id="quoterID" required readonly hidden>
-        
+    <form action="/cotizador/nueva-cotizacion" method="post" id="formNewQuoter">
+        <input type="text" value="<%= quoterID %>" name="quoterID" id="quoterID" required readonly hidden>        
         <div class="form-floating mb-2">  <!-- servicios -->
             <select class="form-control form-control-sm" name="quoterService" id="quoterService" required>
                 <option value="0" selected disabled>Selecionar un Servicio</option>
@@ -11,33 +10,44 @@
             </select>
             <label for="quoterService">Servicio</label>
         </div>
-
-        <div class="form-floating mb-2">  <!-- lista de precios  -->
+        <div class="form-floating mb-1">  <!-- lista de precios  -->
             <select class="form-control form-control-sm" name="quoterPriceList" id="quoterPriceList" required>
                 <option disabled selected >Selecionar lista de precio </option>
                              
             </select>
             <label for="quoterPriceList">Lista Precio</label>
-        </div>   
-      
-        <div class="form-floating mb-2"> <!-- origen -->
-            <input type="text" class="form-control form-control-sm" id="quoterOrigin" name="quoterOrigin" required>
-            <label for="quoterOrigin">Origen</label>
-           
-        </div>
-      
-        <div class="form-floating mb-2"> <!-- destino -->
-            <input type="text" class="form-control form-control-sm" id="quoterDestination" name="quoterDestination" required>
-            <label for="quoterDestination">Destino</label>
+        </div>        
+        <div class="row">
+            <div class="col-11">
+                <div class="form-floating mb-1"> <!-- origen -->
+                    <input type="text" class="form-control form-control-sm" id="quoterOrigin" name="quoterOrigin" required>
+                    <label for="quoterOrigin">Origen</label>
+                </div>
+            </div>
+            <div class="col-1 my-auto p-0"><!-- agregar detención -->
+                <button class="btn btn-sm btn-warning text-light m-0" type="button" id="btnDetention" title="agregar parada"> <i class="fa-solid fa-location-dot"></i> </button>
+            </div>
         </div>
 
+        <div class="row divDetention"> </div>
+
+        <div class="row">
+            <div class="col-11">
+                <div class="form-floating mb-1"> <!-- destino -->
+                    <input type="text" class="form-control form-control-sm" id="quoterDestination" name="quoterDestination" required>
+                    <label for="quoterDestination">Destino</label>
+                </div>
+            </div>
+            <div class="col-1 my-auto p-0"></div>
+        </div>
+       
         <div class="form-check form-switch">
             <input type="checkbox" value=""  id="quoterAuthorizeToll" class="form-check-input" name="quoterAuthorizeToll" >
             <label for="quoterAuthorizeToll">Evitar Peajes</label>
-        </div>
-      
-        <div class="form-floating mb-2"> <!-- observaciones -->
-            <input type="text" class="form-control form-control-sm" id="quoterObservations" name="quoterObservations" required>
+        </div>           
+
+        <div class="form-floating mb-1"> <!-- observaciones -->
+            <input type="text" class="form-control form-control-sm" id="quoterObservations" name="quoterObservations">
             <label for="quoterObservations">Observaciones</label>
         </div>
 
@@ -45,11 +55,11 @@
             <div class="table-responsive">
                 <table class="table  table-quoter-detail">
                     <thead>
-                        <tr>
-                            <th style="width: 55%;">Item</th>
-                            <th style="width: 15%;">Precio</th>
-                            <th style="width: 15%;">Cantidad</th>
-                            <th style="width: 15%;">Total</th>
+                        <tr class="p-0 m-0">
+                            <th class="p-0 m-0" style="width: 55%;">Item</th>
+                            <th class="p-0 m-0" style="width: 15%;">Precio</th>
+                            <th class="p-0 m-0" style="width: 15%;">Cantidad</th>
+                            <th class="p-0 m-0" style="width: 15%;">Total</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -168,13 +178,33 @@
                 </table>
             </div>
         </div>
-        <div>
-            <button class="btn btn-success" type="submit">Guardar</button>
+        <div id="divBtn">
+            <button class="btn btn-success" form="formNewQuoter" style="width: 160px;"  id="btnQuoterSend">
+                Guardar
+            </button>
         </div>
     </form>
 </div>
 
+<script>
+    const formNewQuoter = document.querySelector('#formNewQuoter');
+    const btnQuoterSend = document.querySelector('#btnQuoterSend');
+    const divBtn = document.querySelector('#divBtn');
 
+    formNewQuoter.addEventListener('submit', (event) => {
+        event.preventDefault(); // Evita que el formulario se envíe inmediatamente
 
+        btnQuoterSend.hidden = true; // Oculta el botón de envío
+        divBtn.innerHTML = `
+            <button class="btn btn-success" disabled type="submit" id="btnQuoterloading">
+                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                Creando Cotización...
+            </button>`;
+        // Desactivar todos los campos de entrada
+        Array.from(formNewQuoter.elements).forEach(element => {
+            element.readOnly = true;
+        });
 
-
+        formNewQuoter.submit(); // Envía el formulario después de reemplazar el botón
+    });
+</script>

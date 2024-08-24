@@ -13,6 +13,7 @@ import loginRouter from './src/routes/login.js'
 import quoteGeneratorRouter from './src/routes/quote-generator.js'
 import serviceRouter from './src/routes/services.js'
 import priceListRouter from './src/routes/price-list.js'
+import downloadsPdf from './src/routes/downloadsPdf.js'
 
 const app = express();
 const port = 3000;
@@ -25,7 +26,7 @@ app.use(session({
   saveUninitialized: false,
   cookie:{
     secure:false,
-    maxAge:600000
+    maxAge:6000000
   }
 }));
 
@@ -53,9 +54,11 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/usuarios', userRouter);
 app.use('/dashboard', dashboardRouter);
 app.use('/', loginRouter);
-app.use('/cotizador', quoteGeneratorRouter)
-app.use('/servicios', serviceRouter)
-app.use('/lista-de-precios', priceListRouter)
+app.use('/cotizador', quoteGeneratorRouter);
+app.use('/servicios', serviceRouter);
+app.use('/lista-de-precios', priceListRouter);
+app.use('/downloads', downloadsPdf)
+
 
 app.listen(port, ()=> console.log('ingresaste al port: ' + port));
     

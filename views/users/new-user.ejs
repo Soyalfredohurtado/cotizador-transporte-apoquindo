@@ -27,9 +27,10 @@
                     <div class="form-floating mb-2">
                         <input type="email" class="form-control form-control-sm" name="userEmail" id="userEmail" placeholder="email@email.cl" required>
                         <label for="userEmail">Correo Electrónico</label>
+                        <small id="emailExistsTrue" class="text-danger"></small>
                     </div>
                     <div class="form-floating mb-2">
-                        <select class="form-control form-control-sm" name="userDepartment" required>
+                        <select class="form-control form-control-sm" id="userDepartment" name="userDepartment" required>
                             <option value="" disabled selected>Seleccione area del trabajador</option>                          
                             <option value="d1">Administración</option>
                             <option value="d2">Operaciones</option>
@@ -47,8 +48,7 @@
                         <label for="userDepartment">Rol</label>
                     </div>
                     <div class="form-floating mb-2" hidden >
-                        <select class="form-control form-control-sm" value="s0" name="userStatus" required>                        
-                            <option value="s0">sin asignación</option>
+                        <select class="form-control form-control-sm" value="s1" name="userStatus" required>
                             <option value="s1">pendiente</option>
                             <option value="s2">activo</option>
                             <option value="s3">deshabilitado</option>
@@ -63,6 +63,9 @@
                         <input type="password" class="form-control form-control-sm" name="userPasswordConfirmation" id="userPasswordConfirmation" placeholder="email@email.cl" required>
                         <label for="userPasswordConfirmation">Confirmar Contraseña</label>
                     </div>
+                    <div>
+                        <small id="passwordDistinto" class="text-danger"></small>
+                    </div>
 
 
                     <div class="form-check mb-3">
@@ -73,20 +76,75 @@
                     </div>
                     <div class="text-end">
                         <a class="btn btn-outline-secondary" href="/" style="width: 100px;">Cancelar</a>
-                        <button type="submit" class="btn btn-primary" style="width: 100px;">Agregar</button>
+                        <button type="submit" id="btnForm" class="btn btn-primary" style="width: 100px;" >Agregar</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
-    <script>    
-        function formaterRUN(){
-            const userDocumentNumber = document.querySelector('#userDocumentNumber');
-            let runFormateado = ''
-            let rutLimpio = ''
-            return runFormateado;
-        }
-        userDocumentNumber.addEventListener('input', formaterRUN);
-    </script>
+    <script>
+        // data de los usuarios 
+        const users = <%- JSON.stringify(users) %>;
+
+        // se selecciona el input mail
+        const userEmail = document.querySelector('#userEmail');
+
+        // seleccion del small para mostrar la alert en los email
+        const emailExistsTrue = document.querySelector('#emailExistsTrue');
+
+        // agrupa todos los mail de los usuarios
+        const emails = users.map((user)=>{ return user.userEmail});
+
+        // valida si esta registrado el correo, devuelve true o false    
+
+        const btnForm = document.querySelector('#btnForm');
+
+        //input password y passwordConfirmation 
+        const userPassword = document.querySelector('#userPassword');
+        const userPasswordConfirmation = document.querySelector('#userPasswordConfirmation');
+
+        // seleccion del small para mostrar la alert en los password
+        let passwordExistsTrue = document.querySelector('#passwordDistinto');
+
+        // valida si el email exite y lo muestra en el <small> emailExistsTrue
+        function emailExists(){
+            let emailInlude = emails.includes(userEmail.value.toLowerCase());
+            if(emailInlude){
+                emailExistsTrue.innerHTML = 'correo electrónico registrado';
+                btnForm.disabled = true;
+            }else{
+                emailExistsTrue.innerHTML = '';             
+                if(userPassword.value == userPasswordConfirmation.value){
+                    btnForm.disabled = false;
+                }else{
+                    btnForm.disabled = true;
+                }
+            }
+        }        
+
+        function passwordConfirmationF(){
+            if(userPassword.value == userPasswordConfirmation.value){
+                passwordExistsTrue.innerHTML = '';
+                let emailInlude = emails.includes(userEmail.value.toLowerCase());
+                
+                if(!emailInlude && userEmail.value ){
+                    console.log(userEmail.value)
+                    btnForm.disabled = false;
+                }else{
+                    btnForm.disabled = true;
+                }
+            }else{
+                if(userPasswordConfirmation.value){
+                    passwordExistsTrue.innerHTML = 'Las contraseña no coinciden';
+                    btnForm.disabled = true;
+                };
+                btnForm.disabled= true;
+                console.log('oka')
+            };
+        };
+        userEmail.addEventListener('input', emailExists);
+        userPassword.addEventListener('input', passwordConfirmationF)
+        userPasswordConfirmation.addEventListener('input', passwordConfirmationF)
+    </script>    
 </body>
 </html>

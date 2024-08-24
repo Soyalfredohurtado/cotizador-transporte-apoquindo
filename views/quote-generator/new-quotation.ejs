@@ -2,21 +2,21 @@
 <%- include('../template/header', {title:title}) %>
 <body>
     <%- include('../nav/nav', {title: title}) %>
-    <div class="fluid p-2">
-        <div class="card shadow mx-2">
-            <div class="card-header">
+    <div class="fluid nt-3">
+        <div class="card shadow shadow-sm mx-2 ">
+            <div class="card-header bg-success text-white">
                 <h1 class="h6 text-center m-0"><%= title %></h1>
             </div>
-            <div class="card-body px-4 py-2">
+            <div class="card-body px-4 py-1">
                 <div class="row">
                     <div class="col-md-8 col-lg-6 py-2">
                         <!-- from Quoter Detail-->
                         <%- include('../quote-generator/new-quatation-detail.ejs', {title:title}) %>
                     </div> 
                     <div class="col-md-4 col-lg-6 p-2 ">
-                        <div id="map" class="map bg-warning" style="width: 100%; height: 100%;">
-
-                        </div>                        
+                        <div id="map" class="map bg-warning" style="width: 100%; height: 600px;">
+                        </div> 
+                                              
                     </div>                
                 </div>
             </div>
@@ -25,183 +25,282 @@
 
 
 <!-- Google Maps -->
-<script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBPSxGpd1uRMTRa6FjMz7QZXbgXEFQWv88&libraries=places&callback=initMap"></script>
+    <script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBPSxGpd1uRMTRa6FjMz7QZXbgXEFQWv88&libraries=places&callback=initMap"></script>
 
-<script>
-    let map, marker, marker2, autocomplete, autocomplete2, service, directionsService,directionsRenderer; 
-    let inputOrigen = document.querySelector('#quoterOrigin');
-    let inputDestination = document.querySelector('#quoterDestination');
-    let inputKilometros = document.querySelector('#itemAmountKilometros');
-    async function initMap() {
-    try {
-        const { Map } = await google.maps.importLibrary("maps");
-        let coorChile = { lat: -33.45694, lng: -70.64827 };
-        map = new Map(document.getElementById("map"), {
-            center: coorChile,
-            zoom: 11,
-        });
-        directionsService = new google.maps.DirectionsService();
-        directionsRenderer = new google.maps.DirectionsRenderer();
-        directionsRenderer.setMap(map);
-        marker = new google.maps.Marker({ map });
-        marker2 = new google.maps.Marker({ map });
-        initAutocomplete();
-        } catch (error) {
-            console.error('Error al inicializar el mapa:', error);
-        }}
+    <script>
+        let map, marker, marker2, autocomplete, autocomplete2, service, directionsService,directionsRenderer; 
+        let inputOrigen = document.querySelector('#quoterOrigin');
+        let inputDestination = document.querySelector('#quoterDestination');
+        let inputKilometros = document.querySelector('#itemAmountKilometros');
+        let btnDetention = document.querySelector('#btnDetention');
+        const selectorDivDetention = document.querySelector('.divDetention');
+        let detentions = [];
+        let  waypoints = [];
+        let d = 1;
 
-    function initAutocomplete() {
-        autocomplete = new google.maps.places.Autocomplete(inputOrigen);
-        autocomplete.addListener("place_changed", () => {
-            const place = autocomplete.getPlace();
-            map.setCenter(place.geometry.location);
-            map.setZoom(15);
-            marker.setPosition(place.geometry.location);
-            if (autocomplete2.getPlace()) {
-                calcularRuta(autocomplete, autocomplete2);
-            }
-        });
-        autocomplete2 = new google.maps.places.Autocomplete(inputDestination);
-        autocomplete2.addListener("place_changed", () => {
-            const place2 = autocomplete2.getPlace();
-            //marker2.setPosition(place2.geometry.location);
-            if (autocomplete.getPlace()) {
-                calcularRuta(autocomplete, autocomplete2);
-            }
-        });
-    }
-    function calcularRuta(origin, destination) {
-        const origenLugar = origin.getPlace().geometry.location;
-        const destinoLugar = destination.getPlace().geometry.location;
-        const request = {
-            origin: origenLugar,
-            destination: destinoLugar,
-            travelMode: google.maps.TravelMode.DRIVING
+        // inicio el map 
+        async function initMap() {
+            try {
+                const { Map } = await google.maps.importLibrary("maps");
+                let coorChile = { lat: -33.45694, lng: -70.64827 };
+                map = new Map(document.getElementById("map"), {
+                    center: coorChile,
+                    zoom: 11,
+                });
+                directionsService = new google.maps.DirectionsService();
+                directionsRenderer = new google.maps.DirectionsRenderer();
+                directionsRenderer.setMap(map);
+                marker = new google.maps.Marker({ map });
+                marker2 = new google.maps.Marker({ map });
+                initAutocomplete();
+            } catch (error) {
+                    console.error('Error al inicializar el mapa:', error);
+            };
         };
-        directionsService.route(request, (response, status) => {
-            if (status === google.maps.DirectionsStatus.OK) {
-                directionsRenderer.setDirections(response);
-                // Obtener distancia y duración
-                const distanciaMetros = response.routes[0].legs[0].distance.value;
-                const distanciaKilometros = distanciaMetros / 1000;
-                const duracion = response.routes[0].legs[0].duration.text;
-                kilometrosMonto.value = distanciaKilometros.toFixed(2);
-                marker.setMap(null)
-                marker2.setMap(null)
-                
-                kilometrosTotal.innerText = distanciaKilometros * kilometrosPrecio.value
-               
 
-                calcularTotal()
+        //funcion para agregar el input de detenciones 
+        function btnAddDetention() {
+            const divDetention = `
+            <div class="row m-0 p-0" id="divquoterDetencion${d}">
+                <div class="col-11">
+                    <div class="form-floating mb-1">
+                        <input type="text" class="form-control form-control-sm" id="quoterDetencion${d}" name="quoterDetencion" required>
+                        <label class="mx-1" for="quoterDetencion${d}">Detención</label>
+                    </div>
+                </div>
+                <div class="col-1 my-auto p-0">
+                    <button class="btn btn-sm btn-danger text-light m-0" type="button" id="btnquoterDetencion${d}" for="quoterDetencion${d}" title="Eliminar detención"> 
+                        <i class="fa-solid fa-trash"></i> 
+                    </button>
+                </div>
+            </div>`;
 
-                
-            } else {
-                console.error('Error en la solicitud de ruta:', status);
-            }
-        });
-    }
+            d++;
+            selectorDivDetention.insertAdjacentHTML('beforeend', divDetention);
 
-    window.initMap = initMap;
+            // Se crea un array con las div de las detenciones actuales
+            detentions = document.querySelectorAll('[name="quoterDetencion"]');
 
-    function multiplicar(tipo) {
-    const price = parseFloat(document.getElementById(`itemPrice${tipo}`).value) || 0;
-    const amount = parseFloat(document.getElementById(`itemAmount${tipo}`).value) || 0;
-    const resultado = price * amount;
-    document.getElementById(`resultado${tipo}`).innerText = resultado;
-    calcularTotal();
-    }
+            // se agrega el boton para eliminar los div 
+            detentions.forEach((detention) => {
+                let div = detention.id;
+                let btnRemove = document.querySelector(`#btn${div}`); // Selecciono el botón
 
-    function calcularTotal() {
-        // Calculo Total
-        const itemsTotal = ['BajadaBandera', 'Kilometros', 'Minutos', 'TAG', 'Peaje', 'Estacionamiento'];
-        let totalGeneral = 0;
-        itemsTotal.forEach(item => {
-            totalGeneral += parseFloat(document.getElementById(`resultado${item}`).innerText) || 0;
-        }); 
-        // Calculo Taximetro    
-        const itemsTaximetro = ['BajadaBandera', 'Kilometros', 'Minutos'];
-        let totalTaximetro = 0; 
-        itemsTaximetro.forEach(item => {
-            totalTaximetro += parseFloat(document.getElementById(`resultado${item}`).innerText) || 0;
-        }); 
-        document.getElementById('itemTotalTaximetro').innerText = totalTaximetro;
-        document.getElementById('itemTotalServicio').innerText = totalGeneral;
-    
-    }
-    //=========================================================================
-    const dataPriceList = <%- JSON.stringify(priceList) %>;
-    const quoterService = document.querySelector('#quoterService')
-    const quoterPriceList = document.querySelector('#quoterPriceList')
+                detentionAutocomplete()
 
-    quoterService.addEventListener('change',()=>{
-        quoterPriceList.innerHTML = '';
-        for(let i = 0; i < dataPriceList.length; i++){
+                // Agrego el evento al botón
+                detentions.forEach((detention) => {
+                    let div = detention.id;  // ID del div contenedor de la detención
+                    let divToRemove = document.querySelector(`#div${div}`);
+                    let btnRemove = document.querySelector(`#btn${div}`); // Selecciono el botón de eliminación
+
+                    // Agrego el evento al botón
+                    btnRemove.addEventListener('click', () => {
+                        
+                        if (divToRemove) {
+                            divToRemove.remove();
+                            btnRemove.remove();
+                            
+                        } else {
+                            console.error('No se pudo encontrar el contenedor para eliminar:', div);
+                        }
+                        detentionAutocomplete()
+                        console.log(autocomplete, autocomplete2, waypoints);
+                        calcularRuta(autocomplete, autocomplete2, waypoints);                
+                        
+                    });
+                });
+            });
+        }    
         
-            if(dataPriceList[i].priceListService.includes(quoterService.value)){
-                const option = document.createElement('option');
-                option.value = dataPriceList[i].priceListID;
-                option.textContent = dataPriceList[i].priceListName;
-                quoterPriceList.appendChild(option);
-            }}
-        actualizacionPricios()
-    })
+        // activa la funcion para agregar el input
+        btnDetention.addEventListener('click', btnAddDetention);
 
+        // convierte el input en autocompletado y ser actualiza el array waypoints
+        function detentionAutocomplete() { 
+            // Asigna el Autocomplete y guarda los waypoints
+            waypoints = []
 
-    const bajadaBanderaPrecio = document.querySelector('#itemPriceBajadaBandera');
-    const bajadaBanderaMonto = document.querySelector('#itemAmountBajadaBandera');
-    const bajadaBanderaTotal = document.querySelector('#resultadoBajadaBandera');
-
-
-    const kilometrosPrecio = document.querySelector('#itemPriceKilometros'); 
-    const kilometrosMonto = document.querySelector('#itemAmountKilometros'); 
-    const kilometrosTotal = document.querySelector('#resultadoKilometros'); 
-
-     
-    const minutosPrecio =  document.querySelector('#itemPriceMinutos');  
-    const minutosMonto =  document.querySelector('#itemAmountMinutos'); 
-    const minutosTotal =  document.querySelector('#resultadoMinutos'); 
-
-    const TAGPrecio =  document.querySelector('#itemPriceTAG');  
-    const TAGMonto =  document.querySelector('#itemAmountTAG'); 
-    const TAGTotal =  document.querySelector('#resultadoTAG'); 
-
-    const priceList = document.querySelector('#quoterPriceList');
-    const peaje = document.querySelector('#itemPricePeaje');
-
-    function actualizacionPricios(){
-        // selescionar el detalle de lista de precio por su id 
-        
-        const priceListID  = priceList.value;
-        const i = dataPriceList.le
-        let listaPreciosSeleccionada = ''
-        for(let i = 0 ; i<dataPriceList.length; i++){
-            datos = dataPriceList[i]
-            if ( datos['priceListID' ]== priceListID  ){
-                listaPreciosSeleccionada = datos
-
-                bajadaBanderaPrecio.value = Number(datos.priceListDetail.bajada.itemPrice ) | 0; 
-                bajadaBanderaMonto.value = 1 ;
-                bajadaBanderaTotal.innerText = Number(datos.priceListDetail.bajada.itemPrice ) | 0; 
-
-                kilometrosPrecio.value = datos.priceListDetail.Kilometros.itemPrice | 0;
-                kilometrosTotal.innerText = kilometrosPrecio.value * kilometrosMonto.value 
-
-                minutosPrecio.value = datos.priceListDetail.minutos.itemPrice | 0;
-                minutosTotal.innerText = minutosPrecio.value * (minutosMonto.value | 0 )
-
-                TAGPrecio.value = datos.priceListDetail.tag.itemPrice | 0;
-                TAGTotal.innerText = TAGPrecio.value * (TAGMonto.value | 0 )
-
-
-
-                peaje.value = datos.priceListDetail.peajes.itemPrice | 0;
-                break
-            }
+            detentions.forEach((detention) => {
+                let complete = new google.maps.places.Autocomplete(detention);
+                // Agrega un listener para cuando se selecciona un lugar
+                complete.addListener('place_changed', () => {
+                    const place = complete.getPlace();
+                    
+                    if (place && place.geometry) {
+                        waypoints.push({
+                            location: place.geometry.location,
+                            stopover: true
+                        });
+                    } else {
+                        console.error('No se pudo obtener la ubicación para la detención:', detention);
+                    }
+                    calcularRuta(autocomplete, autocomplete2, waypoints);
+                    
+                });  
+            });
+            
+            
         }
-        calcularTotal()
-    }
-    initMap();
-    priceList.addEventListener('input', actualizacionPricios)
-</script>
+        
+        // autocompletar los input 
+        function initAutocomplete() {
+            autocomplete = new google.maps.places.Autocomplete(inputOrigen);
+            autocomplete2 = new google.maps.places.Autocomplete(inputDestination);
+            autocomplete.addListener("place_changed", () => {
+                const place = autocomplete.getPlace();
+                map.setCenter(place.geometry.location);
+                map.setZoom(15);
+                marker.setPosition(place.geometry.location);
+                calcularRuta(autocomplete, autocomplete2, waypoints);
+                
+            });
+            autocomplete2.addListener("place_changed", () => {
+                const place2 = autocomplete2.getPlace();
+                marker2.setPosition(place2.geometry.location);     
+                calcularRuta(autocomplete, autocomplete2, waypoints);
+            
+            });         
+        }
+
+        function calcularRuta(origin, destination, waypoints = []) {
+            const origenLugar = origin.getPlace().geometry.location;
+            const destinoLugar = destination.getPlace().geometry.location;
+            const request = {
+                origin: origenLugar,
+                destination: destinoLugar,
+                waypoints: waypoints, 
+                travelMode: google.maps.TravelMode.DRIVING,
+                optimizeWaypoints: true
+            };
+
+            directionsService.route(request, (response, status) => {
+                if (status === google.maps.DirectionsStatus.OK) {
+                    directionsRenderer.setDirections(response);
+
+                    // Obtener distancia y duración total
+                    let distanciaTotalMetros = 0;
+                    let duracionTotal = 0;
+
+                    response.routes[0].legs.forEach((leg) => {
+                        distanciaTotalMetros += leg.distance.value;
+                        duracionTotal += leg.duration.value;  // Duración en segundos
+                    });
+
+                    const distanciaKilometros = distanciaTotalMetros / 1000;
+                    kilometrosMonto.value = distanciaKilometros.toFixed(2);
+                    marker.setMap(null);
+                    marker2.setMap(null);
+                    
+                    kilometrosTotal.innerText = distanciaKilometros * kilometrosPrecio.value;
+                    
+                    calcularTotal();
+                    console.log(distanciaKilometros)
+                } else {
+                    console.error('Error en la solicitud de ruta:', status);
+                }
+            });
+        }
+        window.initMap = initMap;
+
+        function multiplicar(tipo) {
+        const price = parseFloat(document.getElementById(`itemPrice${tipo}`).value) || 0;
+        const amount = parseFloat(document.getElementById(`itemAmount${tipo}`).value) || 0;
+        const resultado = price * amount;
+        document.getElementById(`resultado${tipo}`).innerText = resultado;
+        calcularTotal();
+        }
+
+        function calcularTotal() {
+            // Calculo Total
+            const itemsTotal = ['BajadaBandera', 'Kilometros', 'Minutos', 'TAG', 'Peaje', 'Estacionamiento'];
+            let totalGeneral = 0;
+            itemsTotal.forEach(item => {
+                totalGeneral += parseFloat(document.getElementById(`resultado${item}`).innerText) || 0;
+            }); 
+            // Calculo Taximetro    
+            const itemsTaximetro = ['BajadaBandera', 'Kilometros', 'Minutos'];
+            let totalTaximetro = 0; 
+            itemsTaximetro.forEach(item => {
+                totalTaximetro += parseFloat(document.getElementById(`resultado${item}`).innerText) || 0;
+            }); 
+            document.getElementById('itemTotalTaximetro').innerText = totalTaximetro;
+            document.getElementById('itemTotalServicio').innerText = totalGeneral;
+        
+        }
+        //=========================================================================
+        const dataPriceList = <%- JSON.stringify(priceList) %>;
+        const quoterService = document.querySelector('#quoterService')
+        const quoterPriceList = document.querySelector('#quoterPriceList')
+
+        quoterService.addEventListener('change',()=>{
+            quoterPriceList.innerHTML = '';
+            for(let i = 0; i < dataPriceList.length; i++){
+                if(dataPriceList[i].priceListService.includes(quoterService.value)){
+                    const option = document.createElement('option');
+                    option.value = dataPriceList[i].priceListID;
+                    option.textContent = dataPriceList[i].priceListName;
+                    quoterPriceList.appendChild(option);
+                }}
+            actualizacionPricios()
+        })
+
+        const bajadaBanderaPrecio = document.querySelector('#itemPriceBajadaBandera');
+        const bajadaBanderaMonto = document.querySelector('#itemAmountBajadaBandera');
+        const bajadaBanderaTotal = document.querySelector('#resultadoBajadaBandera');
+
+        const kilometrosPrecio = document.querySelector('#itemPriceKilometros'); 
+        const kilometrosMonto = document.querySelector('#itemAmountKilometros'); 
+        const kilometrosTotal = document.querySelector('#resultadoKilometros'); 
+        
+        const minutosPrecio =  document.querySelector('#itemPriceMinutos');  
+        const minutosMonto =  document.querySelector('#itemAmountMinutos'); 
+        const minutosTotal =  document.querySelector('#resultadoMinutos'); 
+
+        const TAGPrecio =  document.querySelector('#itemPriceTAG');  
+        const TAGMonto =  document.querySelector('#itemAmountTAG'); 
+        const TAGTotal =  document.querySelector('#resultadoTAG'); 
+
+        const priceList = document.querySelector('#quoterPriceList');
+        const peaje = document.querySelector('#itemPricePeaje');
+
+        function actualizacionPricios(){
+            // selescionar el detalle de lista de precio por su id 
+            
+            const priceListID  = priceList.value;
+            const i = dataPriceList.le
+            let listaPreciosSeleccionada = ''
+            for(let i = 0 ; i<dataPriceList.length; i++){
+                datos = dataPriceList[i]
+                if ( datos['priceListID' ]== priceListID  ){
+                    listaPreciosSeleccionada = datos
+
+                    bajadaBanderaPrecio.value = Number(datos.priceListDetail.bajada.itemPrice ) | 0; 
+                    bajadaBanderaMonto.value = 1 ;
+                    bajadaBanderaTotal.innerText = Number(datos.priceListDetail.bajada.itemPrice ) | 0; 
+
+                    kilometrosPrecio.value = datos.priceListDetail.Kilometros.itemPrice | 0;
+                    kilometrosTotal.innerText = kilometrosPrecio.value * kilometrosMonto.value 
+
+                    minutosPrecio.value = datos.priceListDetail.minutos.itemPrice | 0;
+                    minutosTotal.innerText = minutosPrecio.value * (minutosMonto.value | 0 )
+
+                    TAGPrecio.value = datos.priceListDetail.tag.itemPrice | 0;
+                    TAGTotal.innerText = TAGPrecio.value * (TAGMonto.value | 0 )
+
+
+
+                    peaje.value = datos.priceListDetail.peajes.itemPrice | 0;
+                    break
+                }
+            }
+            calcularTotal()
+        }
+        //initMap();
+        priceList.addEventListener('input', actualizacionPricios)
+        initMap()
+    </script>
+    <script src="/assets/js/quoter/pricesDetails.js"></script> 
+      
 </body>
 </html>

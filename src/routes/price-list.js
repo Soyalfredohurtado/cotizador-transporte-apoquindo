@@ -6,9 +6,9 @@ import { createPriceListController, getPriceListController, getPriceListByIDCont
 
 router.get('/', async(req, res) =>{
     try {
+        let dataUser = req.session;
         const priceList = await getPriceListController();
-        res.render('price-list/price-list-table.ejs', {title:'Lista de Precios', view:'price-list', priceList} )
-        
+        res.render('price-list/price-list-table.ejs', {title:'Lista de Precios', view:'price-list', priceList, dataUser} )
     }catch (error) {
             res.status(500).send(error);        
         }
@@ -17,9 +17,10 @@ router.get('/', async(req, res) =>{
 
 router.get('/nueva-lista', async (req, res) =>{
     try {
+        let dataUser = req.session;
         const services = await getServicesController();
         const dbPriceListID = await getPriceListController_ID('priceListID');
-        res.render('price-list/new-price-list.ejs', {title:'Lista de Precios', view:'price-list', services,   btnEdit: '', dbPriceListID});
+        res.render('price-list/new-price-list.ejs', {title:'Lista de Precios', view:'price-list', services,   btnEdit: '', dbPriceListID, dataUser});
         
     }catch (error) {
             res.status(500).send(error);        
@@ -40,6 +41,7 @@ router.post('/nueva-lista', async (req, res) =>{
 
 router.get('/view/:priceListID', async (req, res) => {
     try {
+        let dataUser = req.session;
         const priceListID = req.params.priceListID;
         const priceListData = await getPriceListByIDController(priceListID);
 
@@ -51,7 +53,8 @@ router.get('/view/:priceListID', async (req, res) => {
                 btnEdit: 'readonly',
                 services,
                 priceListData,
-                viewType: 'view'
+                viewType: 'view',
+                dataUser
             });
         }else {
             res.redirect('/lista-de-precios');
@@ -66,7 +69,8 @@ router.get('/view/:priceListID', async (req, res) => {
 
 router.get('/edit/:priceListID', async (req, res)=>{
     try {
-        res.render('price-list/price-list-edit.ejs', {title:'Lista de Precios', view:'price-list', btnEdit:''});  
+        let dataUser = req.session;
+        res.render('price-list/price-list-edit.ejs', {title:'Lista de Precios', view:'price-list', btnEdit:'', dataUser});  
         
     } catch (error) {
         console.log('--- price-list.js ---', error)

@@ -9,7 +9,7 @@ router.get('/', async (req, res) => {
     try {
         res.render('login/login.ejs', {
             title: 'Usuarios',
-            view: 'users'
+            view: 'users' 
         });
 
     } catch (error) {
@@ -22,7 +22,6 @@ router.post('/', async (req, res) => {
     try {
         const loginEmail = req.body.userName.toLowerCase();
         const userExists = await getUserByEmail(loginEmail);
-        console.log(userExists);
 
         if (userExists) {
             const plainPassword = req.body.userPassword;
@@ -40,8 +39,15 @@ router.post('/', async (req, res) => {
                 req.session.userRol = dataUser.userRol;
                 req.session.userStatus = dataUser.userStatus;
 
-                res.redirect('/dashboard');
-                console.log('Se ingresó con éxito');
+                if(dataUser.userStatus == 's3'){
+                    res.render('login/login.ejs', {
+                        title: 'Usuarios',
+                        view: 'users',
+                        alertMessage: 'Usuario se encuentra deshabilitado',
+                        alertType: 'danger' })
+                }else{
+                    res.redirect('/dashboard');
+                }                
             } else {
                 res.render('login/login.ejs', {
                     title: 'Usuarios',
@@ -67,6 +73,21 @@ router.post('/', async (req, res) => {
             alertType: 'danger'
         });
     }
+});
+
+
+router.get('/logout', (req, res) => {
+    // Destruir la sesión
+    req.session.destroy(err => {
+        if (err) {
+            // Manejar el error si la sesión no se pudo destruir
+            return res.redirect('/dashboard');
+        }
+        // Eliminar la cookie de sesión
+        res.clearCookie('connect.sid');
+        // Redirigir al usuario a la página de inicio de sesión
+        res.redirect('/');
+    });
 });
 
 export default router;

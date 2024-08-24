@@ -1,0 +1,155 @@
+<div class="table-responsive">
+    <table class="table table-hover  table-quoter-detail">
+        <thead>
+            <tr class="p-0 m-0">
+                <th class="p-0 m-0" style="width: 55%;">Item</th>
+                <th class="p-0 m-0" style="width: 15%;">Precio</th>
+                <th class="p-0 m-0" style="width: 15%;">Cantidad</th>
+                <th class="p-0 m-0" style="width: 15%;">Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><!-- Bajada Bandera -->
+                <td>                    
+                    <input type="text"  id="itemServiceBajadaBandera" name="itemServiceBajadaBandera" class="w-100"
+                    value="<%= quoterDetailById[0].itemID %>"
+                    <% if (viewType !== 'edit' ) { %>disabled<%} %>>
+                </td>
+                <td >
+                    <label for="itemPriceBajadaBandera">
+                        <input type="number"  id="itemPriceBajadaBandera" name="itemPriceBajadaBandera"  class="text-end inputAuto"
+                        value="<%= quoterDetailById[0].detailsQuoter.itemUnitPrice %>"
+                        <% if (viewType !== 'edit' ) { %>disabled<%} %>>
+                    </label>                    
+                </td>
+                <td class="text-end" >
+                    <label for="itemAmountBajadaBandera">
+                        <input type="number" id="itemAmountBajadaBandera" name="itemAmountBajadaBandera" class="text-center"
+                        value="<%= quoterDetailById[0].detailsQuoter.itemAmount %>"
+                        <% if (viewType !== 'edit' ) { %>disabled<%} %>>
+                    </label>
+                </td>
+                <td class="text-end">
+                    <span id="resultadoBajadaBandera"><%= quoterDetailById[0].detailsQuoter.itemTotal %></span>
+                </td>
+            </tr>
+            <tr><!-- Kilómetros -->
+                <td>
+                    <input type="text"  id="itemServiceKilometros" name="itemServiceKilometros"
+                    value="<%= quoterDetailById[1].itemID %>"
+                    <% if (viewType !== 'edit' ) { %>disabled<%} %>>
+                </td>
+                <td >
+                    <label for="itemPriceKilometros">
+                        <input type="number" id="itemPriceKilometros" name="itemPriceKilometros" class="text-end inputAuto"
+                        value="<%= quoterDetailById[1].detailsQuoter.itemUnitPrice %>" oninput="multiplicar('Kilometros')"
+                        <% if (viewType !== 'edit' ) { %>disabled<%} %>>
+                    </label>
+                </td>
+                <td class="text-end">
+                    <input type="number" class="text-center auto" id="itemAmountKilometros" name="itemAmountKilometros" step="0.01" min="0" class="editable"
+                    value="<%= quoterDetailById[1].detailsQuoter.itemAmount %>" oninput="multiplicar('Kilometros')" 
+                    <% if (viewType !== 'edit' ) { %>disabled<%} %>>
+                </td>
+                <td class="text-end">
+                    <span id="resultadoKilometros"><%= quoterDetailById[1].detailsQuoter.itemTotal %></span>
+                </td>
+            </tr>
+            <tr><!-- Minutos --> 
+                <td>
+                    <input type="text" id="itemServiceMinutos" name="itemServiceMinutos"
+                    value="<%= quoterDetailById[2].itemID %>"
+                    <% if (viewType !== 'edit' ) { %>disabled<%} %>
+                    >
+                </td>
+                <td>
+                    <input type="number" value="<%= quoterDetailById[2].detailsQuoter.itemUnitPrice %>" id="itemPriceMinutos" name="itemPriceMinutos" oninput="multiplicar('Minutos')" display class="text-end editable"
+                    <% if (viewType !== 'edit' ) { %>disabled<%} %>>
+                </td>
+                <td class="text-end">
+                   <input type="number" class="text-center inputAuto editable" id="itemAmountMinutos" name="itemAmountMinutos" step="1" min="0"
+                   value="<%= quoterDetailById[2].detailsQuoter.itemAmount %>" oninput="multiplicar('Minutos')"
+                   <% if (viewType !== 'edit' ) { %>disabled<%} %>>
+                </td>
+                <td class="text-end">
+                        <span id="resultadoMinutos"><%= quoterDetailById[2].detailsQuoter.itemTotal %></span>
+                </td>
+            </tr>
+            <tr class="styles-totales"><!-- TOTAL TAXÍMETRO -->
+                <td>Total Taxímetro</td>
+                <td></td>
+                <td></td>
+                <td class="text-end">
+                    <span id="itemTotalTaximetro">0</span>
+                </td>
+            </tr>
+            <tr><!-- TAG --> 
+                <td>
+                    <input type="text"  id="itemServiceTAG" name="itemServiceTAG"
+                    value="<%= quoterDetailById[3].itemID %>"
+                    <% if (viewType !== 'edit' ) { %>disabled<%} %>>
+                </td>
+                <td>
+                    <input type="number"  id="itemPriceTAG" name="itemPriceTAG" oninput="multiplicar('TAG')" class="text-end"
+                    value="<%= quoterDetailById[3].detailsQuoter.itemUnitPrice %>"
+                    <% if (viewType !== 'edit' ) { %>disabled<%} %>>
+                </td>
+                <td class="text-end">
+                   <input type="number" class="text-center" id="itemAmountTAG" name="itemAmountTAG" step="1" min="0" class="editable" 
+                   value="<%= quoterDetailById[3].detailsQuoter.itemAmount %>" oninput="multiplicar('TAG')"
+                   <% if (viewType !== 'edit' ) { %>disabled<%} %>>
+                </td>
+                <td class="text-end">
+                    <span id="resultadoTAG"><%= quoterDetailById[3].detailsQuoter.itemTotal %></span>
+                </td>
+            </tr>
+            <tr><!-- Peaje -->
+                <td>
+                    <input type="text" class="w-100"  id="itemServicePeaje" name="itemServicePeaje"
+                    value="<%= quoterDetailById[4].itemID %>"
+                    <% if (viewType !== 'edit' ) { %>disabled<%} %>>
+                </td>
+                <td>
+                    <input type="number" class="text-end"  id="itemPricePeaje" name="itemPricePeaje" oninput="multiplicar('Peaje')"
+                    value="<%= quoterDetailById[4].detailsQuoter.itemUnitPrice %>"
+                    <% if (viewType !== 'edit' ) { %>disabled<%} %>>
+                </td>
+                <td class="text-end">
+                    <input type="number" class="text-center" id="itemAmountPeaje" name="itemAmountPeaje" step="1" min="0" class="editable" value="<%= quoterDetailById[4].detailsQuoter.itemAmount %>" oninput="multiplicar('Peaje')"
+                    <% if (viewType !== 'edit' ) { %>disabled<%} %>>
+                </td>
+                <td class="text-end">
+                    <span id="resultadoPeaje"><%= quoterDetailById[4].detailsQuoter.itemTotal %></span>
+                </td>
+            </tr>
+            <tr><!-- Estacionamiento -->
+                <td>
+                    <input type="text"  id="itemServiceEstacionamiento" name="itemServiceEstacionamiento" class="w-100"
+                    value="<%= quoterDetailById[5].itemID %>"
+                    <% if (viewType !== 'edit' ) { %>disabled<%} %>>
+                </td>
+                <td>
+                    <input type="number" value="<%= quoterDetailById[5].detailsQuoter.itemAmount %>" id="itemPriceEstacionamiento" name="itemPriceEstacionamiento" oninput="multiplicar('TAG')" readonly class="text-end" hidden>
+                </td>
+                <td class="text-end">
+                    <input type="number" class="text-center" id="itemAmountEstacionamiento" name="itemAmountEstacionamiento" step="1" min="0" class="editable"
+                    value="<%= quoterDetailById[5].detailsQuoter.itemUnitPrice %>" oninput="multiplicar('Estacionamiento')" 
+                    <% if (viewType !== 'edit' ) { %>disabled<%} %>>                           
+                </td>
+                <td class="text-end">
+                   <span id="resultadoEstacionamiento"><%= quoterDetailById[5].detailsQuoter.itemTotal %></span>
+                </td>
+            </tr>
+            <tr class="styles-totales principal"><!-- TOTAL SERVICIO -->
+                <td>
+                    <b>TOTAL SERVICIO</b>
+                </td>
+                <td></td>
+                <td></td>
+                <td class="text-end">
+                    <b><span  id="itemTotalServicio" >0</span></b>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

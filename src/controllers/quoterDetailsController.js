@@ -30,45 +30,60 @@ const createQuoterDetailController = async (req, res) => {
         const details = [
             {
                 itemID: 'BajadaBandera',
-                quoterID: quoterID, // Asegúrate de incluir el quoterID en la solicitud
-                itemUnitPrice: itemPriceBajadaBandera,
-                itemAmount: itemAmountBajadaBandera,
-                itemTotal: itemPriceBajadaBandera * itemAmountBajadaBandera,
+                quoterID: quoterID,
+                detailsQuoter:{
+                    itemUnitPrice: itemPriceBajadaBandera || 0,
+                    itemAmount: itemAmountBajadaBandera || 0,
+                    itemTotal: itemPriceBajadaBandera * itemAmountBajadaBandera
+                }
             },
             {
                 itemID: 'Kilómetros',
                 quoterID: quoterID,
-                itemUnitPrice: itemPriceKilometros,
-                itemAmount: itemAmountKilometros,
-                itemTotal: itemPriceKilometros * itemAmountKilometros,
+                detailsQuoter:{
+                    itemUnitPrice: itemPriceKilometros || 0,
+                    itemAmount: itemAmountKilometros || 0,
+                    itemTotal: itemPriceKilometros * itemAmountKilometros,
+
+                }
+                
             },
             {
                 itemID: 'Minutos',
                 quoterID: quoterID,
-                itemUnitPrice: itemPriceMinutos,
-                itemAmount: itemAmountMinutos,
-                itemTotal: itemPriceMinutos * itemAmountMinutos,
+                detailsQuoter:{
+                    itemUnitPrice: itemPriceMinutos || 0 ,
+                    itemAmount: itemAmountMinutos || 0,
+                    itemTotal: itemPriceMinutos * itemAmountMinutos
+                }
+                
             },
             {
                 itemID: 'TAG',
-                quoterID: quoterID,
-                itemUnitPrice: itemPriceTAG,
-                itemAmount: itemAmountTAG,
-                itemTotal: itemPriceTAG * itemAmountTAG,
+                quoterID: quoterID ,
+                detailsQuoter:{
+                    itemUnitPrice: itemPriceTAG || 0,
+                    itemAmount: itemAmountTAG || 0,
+                    itemTotal: itemPriceTAG * itemAmountTAG,
+                }
             },
             {
                 itemID: 'Peaje',
                 quoterID: quoterID,
-                itemUnitPrice: itemPricePeaje,
-                itemAmount: itemAmountPeaje,
-                itemTotal: itemPricePeaje * itemAmountPeaje,
+                detailsQuoter:{
+                    itemUnitPrice: itemPricePeaje || 0,
+                    itemAmount: itemAmountPeaje || 0,
+                    itemTotal: itemPricePeaje * itemAmountPeaje,
+                }
             },
             {
                 itemID: 'Estacionamiento',
                 quoterID: quoterID,
-                itemUnitPrice: itemAmountEstacionamiento, 
-                itemAmount: 1, 
-                itemTotal: itemAmountEstacionamiento,
+                detailsQuoter:{
+                    itemUnitPrice: itemAmountEstacionamiento || 0, 
+                    itemAmount: 1, 
+                    itemTotal: itemAmountEstacionamiento || 0
+                }
             }
         ];
         
@@ -84,4 +99,14 @@ const createQuoterDetailController = async (req, res) => {
     }
 };
 
-export { createQuoterDetailController };
+const getQuoterDetailById = async(key) =>{
+    try {
+        const QuoterDetailById  = await QuoterDetail.find({quoterID:key})
+        return QuoterDetailById;        
+    } catch (error) {
+        console.log(error);
+        throw error;        
+    }
+}
+
+export { createQuoterDetailController,  getQuoterDetailById};

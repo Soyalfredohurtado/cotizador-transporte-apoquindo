@@ -49,4 +49,34 @@ const createUserController = async (req) => {
 };
 
 
-export { getUsersController, createUserController, getUserKeyController };
+const updateUserController = async (req, res) => {
+    try {
+        const { userId } = req.params;
+        const { userFirstName, userLastName, userDocumentNumber, userEmail, userDepartment, userRol, userStatus } = req.body;
+    
+        // Buscar el usuario por ID
+        const user = await User.findOne({ userID: userId });
+        
+        if (user) {
+            // Actualizar los campos proporcionados
+            user.userFirstName = userFirstName || user.userFirstName;
+            user.userLastName = userLastName || user.userLastName;
+            user.userDocumentNumber = userDocumentNumber || user.userDocumentNumber;
+            user.userEmail = userEmail || user.userEmail;
+            user.userDepartment = userDepartment || user.userDepartment;
+            user.userRol = userRol || user.userRol;
+            user.userStatus = userStatus || user.userStatus;
+
+            // Guardar los cambios en la base de datos
+            await user.save();            
+        }
+
+    } catch (error) {
+        console.error('Error al actualizar usuario / updateUserController', error);
+        res.status(500).json({ message: 'Error al actualizar el usuario' });
+    }
+};
+
+
+
+export { getUsersController, createUserController, getUserKeyController, updateUserController };

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<%- include('../template/header', {title:title}) %>
+<body>
+    <%- include('../nav/nav', {title: title}) %>
+    <div class="container-fluid">
+        <div class="card m-2 p-2">
+            <div class="row m-0">
+                <div class="col-md-6">
+                    <div class="row">                        
+                        <div class="col-md-6">
+                            <dl class="row m-0">    
+                                <dt class="col-4">Fecha:</dt>                                
+                                <dd class="col-8">                            
+                                    <input type="date"  id="quoteDate" class="text-center"
+                                    value="<%= QuoterById.created_at  %>"
+                                    <% if (viewType !== 'edit' ) { %>disabled<%} %>>
+                                </dd>
+                            </dl>
+                        </div>
+                        <div class="col-md-6 m-0">
+                            <dl class="row m-0 "><!-- quoter number -->
+                                <dt class="col-8">Cotizacion nro:</dt>
+                                <dd class="col-4"><b></b>
+                                    <input type="text" id="quoteID" class="h6 w-100 text-danger text-center bg-light" value="<%= QuoterById.quoterNumber %>" 
+                                    <% if (viewType !== 'edit' ) { %>disabled<%} %>>
+                                </dd> 
+                            </dl>
+                        </div>
+                    </div>
+                    <dl class="row m-0"><!-- service -->
+                        <dt class="col-3">Servicio:</dt>
+                        <div class="col-1">
+                            <i class="fa-solid fa-circle-info text-info"></i>
+                        </div>
+                        <dd class="col-8">                            
+                            <input type="text"  id="quoteServiceID" value=""  class="m-0 p-0 form-control-plaintext"
+                            <% if (viewType !== 'edit' ) { %>disabled<%} %>>
+                        </dd>
+                    </dl>
+                    <dl class="row m-0"><!-- price List-->
+                        <dt class="col-3">Lista de Precios:</dt>
+                        <div class="col-1">
+                            <i class="fa-solid fa-circle-info text-info"></i>
+                        </div>
+                        <dd class="col-8">
+                            <input type="text" readonly  id="quotePriceListID" name="quotePriceListID" value=""  class="m-0 p-0 form-control-plaintext"
+                            <% if (viewType !== 'edit' ) { %>disabled<%} %>>
+                        </dd> 
+                    </dl>
+                    <dl class="row m-0"><!-- origin -->
+                        <dt class="col-4">Origen:</dt>
+                        <dd class="col-8">
+                            <input type="text" readonly  id="originID" value="<%= QuoterById.quoterOrigin %>" class="m-0 p-0 form-control-plaintext"
+                            <% if (viewType !== 'edit' ) { %>disabled<%} %>>
+                        </dd> 
+                    </dl>
+                    <% QuoterById.quoterWaypoints.forEach(waypoint => { %>
+                        <dl class="row m-0"><!-- origin -->
+                        <dt class="col-4">Detención:</dt>
+                        <dd class="col-8">
+                            <input type="text" readonly  id="originID" value="<%= waypoint %>" class="m-0 p-0 form-control-plaintext"
+                            <% if (viewType !== 'edit' ) { %>disabled<%} %>>
+                        </dd> 
+                    </dl>                        
+                    <% }) %> 
+                    <dl class="row m-0"><!-- destination -->
+                        <dt class="col-4">Destino:</dt>
+                        <dd class="col-8">
+                            <input type="text" readonly  id="quoterDestination" value="<%= QuoterById.quoterDestination %>" class="m-0 p-0 form-control-plaintext"
+                            <% if (viewType !== 'edit' ) { %>disabled<%} %>>
+                        </dd> 
+                    </dl>
+                    <dl class="row m-0"><!-- observatión -->
+                        <dt class="col-4">Observaciones:</dt>
+                        <dd class="col-8">
+                            <input type="text" readonly  id="originID" value="<%= QuoterById.quoterObservation %>"  class="m-0 p-0 form-control-plaintext"
+                            <% if (viewType !== 'edit' ) { %>disabled<%} %>>
+                        </dd> 
+                    </dl>
+                    <div>
+                        <%- include('../quote-generator/quotation-view-details-table.ejs') %>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <!-- map -->
+                    <h1>mapa</h1>  
+                    <div>
+                        <a class="btn btn-light border" style="width: 150px;" href="/cotizador"><i class="fa-solid fa-arrow-left mx-"></i> Volver</a>
+
+                        <button hidden class="btn btn-light border" style="width: 150px;"><i class="fa-solid fa-pen-to-square mx-2"></i> Editar</button>
+                        
+                        <a hidden href="/downloads/cotizacion/<%= QuoterById.quoterID %>" class="btn btn-light border" style="width: 150px;" > <i class="fa-solid fa-arrow-down mx-2"></i>Generar PDF</a>
+                       
+                        <a class="btn btn-danger border" href="/PDFs/quoter/cotizacion-<%= QuoterById.quoterNumber %>.pdf" style="width: 150px;" target="_blank"><i class="fa-solid fa-file-pdf mx-2"></i> Ver PDF</a>
+                    </div>                                     
+                </div>
+            </div> 
+        </div>        
+    </div>
+    <script>
+        // data sevivios 
+        const serviceList = <%- JSON.stringify(servicesList) %>;
+
+        // data cotizador 
+        const QuoterById = <%- JSON.stringify(QuoterById) %>;
+
+        // data lista de precios
+        const listPriceList = <%- JSON.stringify(priceList) %>;
+
+        const quoterDetailById = <%- JSON.stringify(quoterDetailById) %>;    
+        
+        // ob
+        const dateISO = QuoterById.created_at 
+    </script>
+    <script src="/assets/js/quoter/getNameServiceById.js"></script>
+    <script src="/assets/js/quoter/inputDate.js"></script>
+</body>
+</html>
+
+
+

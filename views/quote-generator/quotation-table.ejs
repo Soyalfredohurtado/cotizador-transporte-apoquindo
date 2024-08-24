@@ -27,8 +27,8 @@
                     <tbody>                    
                         <%quoters.forEach (quoter =>{ %>                        
                             <tr>
-                                <td class="text-center my-auto" style="width: 13%;"> 00000 </td>
-                                <td>25.000</td>                                
+                                <td class="text-center my-auto" style="width: 13%;">c-<%= quoter.quoterNumber %> </td>
+                                <td>00.000</td>                                
                                 <td>
                                     <div>
                                         <i class="fa-solid fa-location-dot" style="font-size: 0.8rem;"></i> <%= quoter.quoterOrigin %>
@@ -38,15 +38,12 @@
                                     </div>
                                 </td>    
                                 <td>Pendiente</td>  
-                                <td>
+                                <td class="text-center">
                                     <!-- view -->
-                                    <button class="btn text-success" disabled title="ver servicio"><i class="fa-solid fa-eye"></i></button>
-                                    <!-- view -->
-                                    <button class="btn text-success" disabled title="ver servicio"><i class="fa-solid fa-eye"></i></button>
+                                    <a class="btn text-success" href="/cotizador/view/<%= quoter.quoterID %>" title="ver Cotización"><i class="fa-solid fa-eye"></i></a>
                                 </td> 
                             </tr>
-                        <% }) %>  
-                       
+                        <% }) %>
                     </tbody>
                 </table>
             </div>

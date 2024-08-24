@@ -5,13 +5,15 @@ const router = express.Router();
 
 router.get('/', async (req, res)=>{
     const services = await getServicesController();
-    res.render('services/service-table.ejs', {title:'Servicios', view:'services', services});
+    let dataUser = req.session;
+    res.render('services/service-table.ejs', {title:'Servicios', view:'services', services, dataUser});
 })
 
 router.get('/nuevo-servicio', async (req, res) =>{
     try {
+        let dataUser = req.session;
         let seviceListID_ = await getServicesByIDController();
-        res.render('services/new-service.ejs', {title:'Nuevo Servicio', view:'services', seviceListID_});        
+        res.render('services/new-service.ejs', {title:'Nuevo Servicio', view:'services', seviceListID_, dataUser});        
     } catch (error) {
         res.status(500).send('Error al obtener los services');        
     }
@@ -29,11 +31,12 @@ router.post('/nuevo-servicio', async(req, res) => {
 
 router.get('/view/:serviceid', async(req, res) => {
     try {
+        let dataUser = req.session;
         const serviceID = String(req.params.serviceid);
         const services = await getServicesController();
         const serviceByKey = await getSerciceByKeyController(serviceID);
         if(serviceByKey){
-            res.render('services/service-view.ejs', {title:'Servicio View', view:'services', services, serviceByKey, viewType:'view'}); 
+            res.render('services/service-view.ejs', {title:'Servicio View', view:'services', services, serviceByKey, viewType:'view', dataUser}); 
         }else{
             res.redirect('/servicios');
         }      
@@ -45,11 +48,12 @@ router.get('/view/:serviceid', async(req, res) => {
 
 router.get('/view/:serviceid/edit', async(req, res) => {
     try {
+        let dataUser = req.session;
         const serviceID = String(req.params.serviceid);
         const services = await getServicesController();
         const serviceByKey = await getSerciceByKeyController(serviceID);
         if(serviceByKey){
-            res.render('services/service-view.ejs', {title:'Servicio View', view:'services', services, serviceByKey, viewType:'edit'}); 
+            res.render('services/service-view.ejs', {title:'Servicio View', view:'services', services, serviceByKey, viewType:'edit', dataUser}); 
         }else{
             res.redirect('/servicios');
         }     
@@ -60,7 +64,7 @@ router.get('/view/:serviceid/edit', async(req, res) => {
 })
 
 
-router.post('/edit/:serviceid', async (req, res) => {
+router.post('/update/:serviceid', async (req, res) => {
     const serviceID  = String(req.params.serviceid);
     try {        
         await updateServiceController(req, serviceID);

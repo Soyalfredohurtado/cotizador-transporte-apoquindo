@@ -1,12 +1,88 @@
 <!DOCTYPE html>
-<%- include('../template/header', {title:title}) %>
+<%- include('../template/header', {title: title}) %>
 <body>
     <%- include('../nav/nav', {title: title}) %>
-    <div>
-        <%= dataUser %>
+    <div class="container ">
+        <div class="row">
+            <form action="/usuarios/update/<%= dataUserByKey.userID %>" method="POST">
+                <div class="col-md-6">
+                    <div class="card m-2 p-3 mx-auto">
+                        <h6 class="m-2 p-0">Perfil Usuario</h6>
+                        <hr class="mt-0 mb-2">
+                        <dl class="row">
+                            <dt class="col-5">
+                                Nombre:
+                            </dt>
+                            <dd class="col-7 text-center">
+                                <input type="text" name="userFirstName" id="userFirstName" class="form-control" value="<%= dataUserByKey.userFirstName %>" required
+                                <% if (viewType !== 'edit') { %> disabled<% } %>>
+                            </dd>   
+
+                            <dt class="col-5">
+                                Apellidos:
+                            </dt>
+                            <dd class="col-7 text-center">
+                                <input type="text" name="userLastName" id="userLastName" class="form-control" value="<%= dataUserByKey.userLastName %>" required
+                                <% if (viewType !== 'edit') { %> disabled<% } %>>
+                            </dd> 
+
+                            <dt class="col-5">
+                                E-Mail:
+                            </dt>
+                            <dd class="col-7 text-center">
+                                <input type="email" name="userEmail" id="userEmail" class="form-control" value="<%= dataUserByKey.userEmail %>" required
+                                <% if (viewType !== 'edit') { %> disabled<% } %>>
+                            </dd>
+
+                            <dt class="col-5">
+                                Rol:
+                            </dt>
+                            <dd class="col-7 text-center" >
+                                <select name="userRol" id="userRol" class="form-control" required <% if (viewType !== 'edit') { %> disabled<% } %>>
+                                    <option value="r0" disabled <% if (dataUserByKey.userRol === 'r0') { %>selected<% } %>>Pendiente</option>
+                                    <option value="r1" <% if (dataUserByKey.userRol === 'r1') { %>selected<% } %>>Administrador</option>
+                                    <option value="r2" <% if (dataUserByKey.userRol === 'r2') { %>selected<% } %>>SuperAdmin</option>
+                                    <option value="r3" <% if (dataUserByKey.userRol === 'r3') { %>selected<% } %>>General</option>
+                                </select>
+                            </dd>
+
+                            <dt class="col-5">
+                                Status:
+                            </dt>
+                            <dd class="col-7 text-center">
+                                <select name="userStatus" id="userStatus" class="form-control" required <% if (viewType !== 'edit') { %> disabled<% } %>>
+                                    <option value="s0" disabled <% if (dataUserByKey.userStatus === 's0') { %>selected<% } %>>Sin Asignación</option>
+                                    <option value="s1" <% if (dataUserByKey.userStatus === 's1') { %>selected<% } %>>Pendiente</option>
+                                    <option value="s2" <% if (dataUserByKey.userStatus === 's2') { %>selected<% } %>>Activo</option>
+                                    <option value="s3" <% if (dataUserByKey.userStatus === 's3') { %>selected<% } %>>Deshabilitado</option>
+                                </select>
+                            </dd>
+
+                            <dt class="col-5">
+                                Departamento:
+                            </dt>
+                            <dd class="col-7 text-center">
+                                <select name="userDepartment" id="userDepartment" class="form-control" required <% if (viewType !== 'edit') { %> disabled<% } %>>
+                                    <option value="d0" disabled <% if (dataUserByKey.userDepartment === 'd0') { %>selected<% } %>>Sin Asignación</option>
+                                    <option value="d1" <% if (dataUserByKey.userDepartment === 'd1') { %>selected<% } %>>Administración</option>
+                                    <option value="d2" <% if (dataUserByKey.userDepartment === 'd2') { %>selected<% } %>>Operaciones</option>
+                                    <option value="d3" <% if (dataUserByKey.userDepartment === 'd3') { %>selected<% } %>>Flota</option>
+                                </select>
+                            </dd>
+                        </dl>
+                        <div class="text-center">
+                            <a style="width: 100px;" href="/usuarios" class="btn btn-sm btn-secondary mx-1" <% if (viewType === 'edit') { %>hidden<% } %>>Volver</a>
+                            <a style="width: 100px;" href="/usuarios/edit/<%= dataUserByKey.userID %>" class="btn btn-sm btn-warning mx-1" <% if (viewType === 'edit') { %>hidden<% } %>>Editar</a>
+                            <a style="width: 100px;" href="/usuarios/view/<%= dataUserByKey.userID %>" class="btn btn-sm btn-secondary mx-1" <% if (viewType !== 'edit') { %>hidden<% } %>>Cancelar</a>
+                            <button style="width: 100px;" type="submit" class="btn btn-sm btn-success mx-1" <% if (viewType !== 'edit') { %>hidden<% } %>>Guardar</button>
+                        </div>                        
+                    </div>
+                </div>
+            </form>
+        </div>    
     </div>
-    <!-- <script src="/assets/js/fuctionServices.js"></script>  -->
 </body>
 </html>
+
 
 
